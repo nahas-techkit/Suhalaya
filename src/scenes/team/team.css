@@ -1,0 +1,14 @@
+.comapny-management{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.comapny-management button{
+    border: none;
+    padding: 10px 10px;
+    border-radius: 5px;
+    background-color: #3e4396;
+    color: white;
+    cursor: pointer;
+}
