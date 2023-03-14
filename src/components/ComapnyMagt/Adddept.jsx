@@ -7,6 +7,9 @@ import React from "react";
 function adddept() {
   return (
     <div>
+              <div className="comapny-management">
+         <Header title="" subtitle="Add Department" />
+         </div>
         
        <Box
         width="40%"

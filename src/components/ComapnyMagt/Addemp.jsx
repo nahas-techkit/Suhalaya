@@ -7,6 +7,8 @@ import React from "react";
 function Addemp() {
     return (
         <div>
+                        <div><h1>Add Employee</h1></div>
+
             
            <Box
             width="40%"
@@ -25,7 +27,21 @@ function Addemp() {
                     
                     variant="filled"
                     type="text"
-                    label="Name Of Departent "
+                    label="Name "
+                    // onBlur={handleBlur}
+                    // onChange={handleChange}
+                    // value={values.nameOfComapnie}
+                    name="nameOfComapnie"
+                    // error={!!touched.nameOfComapnie && !!errors.nameOfComapnie}
+                    // helperText={touched.nameOfComapnie && errors.nameOfComapnie}
+                    sx={{ gridColumn: "span 4" }}
+                  />
+           <TextField
+                    fullWidth
+                    
+                    variant="filled"
+                    type="text"
+                    label="Mobile "
                     // onBlur={handleBlur}
                     // onChange={handleChange}
                     // value={values.nameOfComapnie}
@@ -39,7 +55,33 @@ function Addemp() {
                     fullWidth
                     variant="filled"
                     type="text"
-                    label="Department id "
+                    label="email "
+                    // onBlur={handleBlur}
+                    // onChange={handleChange}
+                    // value={values.nameOfComapnie}
+                    name="nameOfComapnie"
+                    // error={!!touched.nameOfComapnie && !!errors.nameOfComapnie}
+                    // helperText={touched.nameOfComapnie && errors.nameOfComapnie}
+                    sx={{ gridColumn: "span 4" }}
+                  />
+                   <TextField
+                    fullWidth
+                    variant="filled"
+                    type="text"
+                    label="Address "
+                    // onBlur={handleBlur}
+                    // onChange={handleChange}
+                    // value={values.nameOfComapnie}
+                    name="nameOfComapnie"
+                    // error={!!touched.nameOfComapnie && !!errors.nameOfComapnie}
+                    // helperText={touched.nameOfComapnie && errors.nameOfComapnie}
+                    sx={{ gridColumn: "span 4" }}
+                  />
+                   <TextField
+                    fullWidth
+                    variant="filled"
+                    type="text"
+                    label="Department "
                     // onBlur={handleBlur}
                     // onChange={handleChange}
                     // value={values.nameOfComapnie}

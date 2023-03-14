@@ -8,7 +8,8 @@
     border: none;
     padding: 10px 10px;
     border-radius: 5px;
-    background-color: #3e4396;
+    background-color: #3e4396 !important;
+
     color: white;
     cursor: pointer;
 }

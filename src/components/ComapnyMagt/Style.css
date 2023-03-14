@@ -2,3 +2,7 @@
 .ViewCompany{
     padding: 10px;
 }
+.viewcompany-button{
+    display: flex;
+    gap: 10px;
+}
