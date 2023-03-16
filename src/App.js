@@ -17,6 +17,7 @@ import { ColorModeContext, useMode } from "./theme";
 import Calendar from "./scenes/calendar/calendar";
 import Tripsheet from "./components/TripMagt/Tripsheet";
 import Nt from "./components/TripMagt/Nt"
+import Print from "./components/TripMagt/Print"
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -43,6 +44,8 @@ function App() {
               <Route path="/calendar" element={<Calendar />} />
               <Route path="/geography" element={<Geography />} />
               <Route path="/nt" element={<Nt />} />
+              <Route path="/print" element={<Print />} />
+
             </Routes>
           </main>
         </div>
