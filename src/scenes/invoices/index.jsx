@@ -54,6 +54,7 @@ const Invoices = () => {
   ];
 
   return (
+    <>
     <Box m="20px">
        <div className="comapny-management">
         <Header title="TRIPS" subtitle="Managing the trips" />
@@ -93,10 +94,18 @@ const Invoices = () => {
           },
         }}
       >
+  
+       
         <DataGrid checkboxSelection rows={mockDataInvoices} columns={columns} />
+        
       </Box>
       }
     </Box>
+    <div className='viewcompany-button'>
+    <button style={{backgroundColor: "green"}} >Edit</button >
+    </div>
+    </>
+    
   );
 };
 

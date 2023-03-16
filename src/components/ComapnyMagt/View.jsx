@@ -86,19 +86,7 @@ const Form = () => {
                                 helperText={touched.email && errors.email}
                                 sx={{ gridColumn: "span 4" }}
                             />
-                            {/* <TextField
-                fullWidth
-                variant="filled"
-                type="text"
-                label="Address 1"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.address1}
-                name="address1"
-                error={!!touched.address1 && !!errors.address1}
-                helperText={touched.address1 && errors.address1}
-                sx={{ gridColumn: "span 4" }}
-              /> */}
+
                             <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
                                 <InputLabel id="demo-simple-select-standard-label">Select Department</InputLabel>
                                 <Select

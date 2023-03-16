@@ -1,0 +1,49 @@
+.print{
+    column-gap: 10px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+    font-size: 25px;
+}
+.head{
+
+    
+    display: flex;
+    font-size: 40px;
+    align-items: flex-start;
+    /* flex-direction: column; */
+    margin: 20px;
+    margin-top:20px;
+    border: 3px solid black;
+    justify-content: space-between;
+}
+
+.left{
+    display: flex;
+    flex-direction: column;
+    padding-left: 10px;
+    font-size: medium;
+
+ 
+}
+.center{
+    display: flex;
+    flex-direction: column;
+     justify-content: center;
+     align-items: center;
+
+}
+.right{
+    display: flex;
+    flex-direction: column;
+     justify-content: center;
+     align-items: flex-start;
+     font-size: medium;
+     padding-right: 10px;
+}
+
+
+.invoice{
+    background-color: rgb(255, 255, 255);
+}

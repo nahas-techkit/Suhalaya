@@ -6,15 +6,18 @@ import Header from "../../components/Header";
 import { useTheme } from "@mui/material";
 import { useState } from "react";
 import Form from "../../components/DriverMagt/DriverForm";
+import View from "../../components/DriverMagt/View"
 
 const Contacts = () => {
-  const [showForm, setShowForm] = useState(false);  
+  const [showForm, setShowForm] = useState(false);
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const [view, setView] = useState(false);
+
 
   const columns = [
     { field: "id", headerName: "ID", flex: 0.5 },
-    
+
     {
       field: "name",
       headerName: "Name",
@@ -78,7 +81,7 @@ const Contacts = () => {
               backgroundColor={colors.blueAccent[700]}
               borderRadius="4px"
             >
-              <Typography color={colors.grey[100]} sx={{ ml: "5px" }}>
+              <Typography onClick={() => setView(true)} color={colors.grey[100]} sx={{ ml: "5px" }}>
                 View
               </Typography>
             </Box>
@@ -103,58 +106,59 @@ const Contacts = () => {
   ];
 
   return (
-    <Box m="20px">
-     <div className="comapny-management">
+    <>
+    {
+      view ? <View/> : <><Box m="20px">
+      <div className="comapny-management">
         <Header title="DRIVERS" subtitle="Managing the drivers" />
         <div>
-          <button onClick={()=>setShowForm(!showForm)}>Add New Driver</button>
+          <button onClick={() => setShowForm(!showForm)}>Add New Driver</button>
         </div>
       </div>
 
       {
-        showForm ? <Form/> : <Box
-        m="40px 0 0 0"
-        height="75vh"
-        sx={{
-          "& .MuiDataGrid-root": {
-            border: "none",
-          },
-          "& .MuiDataGrid-cell": {
-            borderBottom: "none",
-          },
-          "& .name-column--cell": {
-            color: colors.greenAccent[300],
-          },
-          "& .MuiDataGrid-columnHeaders": {
-            backgroundColor: colors.blueAccent[700],
-            borderBottom: "none",
-          },
-          "& .MuiDataGrid-virtualScroller": {
-            backgroundColor: colors.primary[400],
-          },
-          "& .MuiDataGrid-footerContainer": {
-            borderTop: "none",
-            backgroundColor: colors.blueAccent[700],
-          },
-          "& .MuiCheckbox-root": {
-            color: `${colors.greenAccent[200]} !important`,
-          },
-          "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
-            color: `${colors.grey[100]} !important`,
-          },
-        }}
-      >
-        <DataGrid
-          rows={mockDataContacts}
-          columns={columns}
-          components={{ Toolbar: GridToolbar }}
-        />
-      </Box>
+        showForm ? <Form /> : <Box
+          m="40px 0 0 0"
+          height="75vh"
+          sx={{
+            "& .MuiDataGrid-root": {
+              border: "none",
+            },
+            "& .MuiDataGrid-cell": {
+              borderBottom: "none",
+            },
+            "& .name-column--cell": {
+              color: colors.greenAccent[300],
+            },
+            "& .MuiDataGrid-columnHeaders": {
+              backgroundColor: colors.blueAccent[700],
+              borderBottom: "none",
+            },
+            "& .MuiDataGrid-virtualScroller": {
+              backgroundColor: colors.primary[400],
+            },
+            "& .MuiDataGrid-footerContainer": {
+              borderTop: "none",
+              backgroundColor: colors.blueAccent[700],
+            },
+            "& .MuiCheckbox-root": {
+              color: `${colors.greenAccent[200]} !important`,
+            },
+            "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
+              color: `${colors.grey[100]} !important`,
+            },
+          }}
+        >
+          <DataGrid
+            rows={mockDataContacts}
+            columns={columns}
+            components={{ Toolbar: GridToolbar }}
+          />
+        </Box>
       }
 
-      
-      
-    </Box>
+    </Box></>
+    }</>
   );
 };
 
