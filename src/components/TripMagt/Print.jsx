@@ -2,6 +2,7 @@ import React, { useRef } from "react";
 import { Button } from "react-bootstrap";
 import ReactToPrint from "react-to-print";
 import "./pt.css"
+import Signpad from "./Signpad";
 
 export default function PrintComponent() {
   let componentRef = useRef();
@@ -11,7 +12,7 @@ export default function PrintComponent() {
       <div>
         {/* button to trigger printing of target component */}
         <ReactToPrint
-          trigger={() => <Button>Print this out!</Button>}
+          trigger={() => <Button className="btn">PRINT</Button>}
           content={() => componentRef}
         />
 
@@ -96,6 +97,7 @@ class ComponentToPrint extends React.Component {
             <div className="center2">
             <span>Cost :</span>
             <span>Digital Sign : </span>
+            <Signpad/>
             </div>
             <div className="right">
             {/* <span>Customer Name</span>

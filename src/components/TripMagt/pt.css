@@ -148,3 +148,13 @@
   
     margin: 0px 0px 0px 0px;
 }
+
+.btn{
+    background-color: #6870FB;
+    color: white;
+    font-size: 20px;
+    margin-left: 20px;
+    width: 150px;
+    font-weight: 600;
+    padding: 10px;
+}

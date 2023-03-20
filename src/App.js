@@ -18,6 +18,7 @@ import Calendar from "./scenes/calendar/calendar";
 import Tripsheet from "./components/TripMagt/Tripsheet";
 import Nt from "./components/TripMagt/Nt"
 import Print from "./components/TripMagt/Print"
+import Sign from "./components/TripMagt/Signpad"
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -45,6 +46,7 @@ function App() {
               <Route path="/geography" element={<Geography />} />
               <Route path="/nt" element={<Nt />} />
               <Route path="/print" element={<Print />} />
+              <Route path="/sign" element={<Sign />} />
 
             </Routes>
           </main>
