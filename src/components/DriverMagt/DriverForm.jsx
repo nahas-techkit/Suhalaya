@@ -3,17 +3,26 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
+import axios from "../../utils/axiosInstance"
+import toast, { Toaster } from "react-hot-toast"
 
 const Form = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
 
-  const handleFormSubmit = (values) => {
+  const handleFormSubmit = (values,{resetForm}) => {
     console.log("log");
     console.log(values);
+    axios.post('/api/v1/driver', values)
+      .then((res) => {
+        resetForm()
+        toast.success(res.data.message)
+      })
+      .catch((e) => { console.log(e); toast.error(e.response.data.message) })
   };
 
   return (
     <Box m="20px">
+      <Toaster />
       <Header subtitle="Add New Driver Profile" />
 
       <Formik
@@ -176,8 +185,8 @@ const phoneRegExp =
   /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
 
 const checkoutSchema = yup.object().shape({
- firstName: yup.string().required("required"),
- lastName: yup.string().required("required"),
+  firstName: yup.string().required("required"),
+  lastName: yup.string().required("required"),
 
   email: yup.string().email("invalid email").required("required"),
   contact: yup
@@ -192,14 +201,14 @@ const checkoutSchema = yup.object().shape({
 });
 const initialValues = {
   firstName: "",
-  lastName:"",
+  lastName: "",
   email: "",
   contact: "",
   address: "",
-  licenseNo:"",
-  vehicleNo:"",
-  vehicleType:"",
-  vehicleModel:"",
+  licenseNo: "",
+  vehicleNo: "",
+  vehicleType: "",
+  vehicleModel: "",
 };
 
 export default Form;

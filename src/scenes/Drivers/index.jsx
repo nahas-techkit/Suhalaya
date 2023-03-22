@@ -4,19 +4,28 @@ import { tokens } from "../../theme";
 import { mockDataContacts } from "../../data/mockData";
 import Header from "../../components/Header";
 import { useTheme } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "../../utils/axiosInstance";
 
 import { Link as RouterLink } from "react-router-dom";
 
-const Contacts = () => {
-  
+const Contacts = (  ) => {
+  const [showForm, setShowForm] = useState(false);
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  
+  const [view, setView] = useState(false);
+  const [drivers, setDrivers] = useState([])
+
+  useEffect(() => {
+    axios.get('/api/v1/driver').then((res) => {
+      console.log(res.data.drivers);
+      setDrivers(res.data.drivers?.map(({ _id, ...driver }, i) => ({ slNo: i + 1, id: _id, ...driver })));
+    })
+  }, [])
 
   const columns = [
-    { field: "id", headerName: "Sl.No", flex: 0.5 },
-    { field: "_id", headerName: "Id", flex: 0.5 },
+    { field: "slNo", headerName: "SL.No", flex: 0.5 },
+    { field: "id", headerName: "ID", flex: 0.5 },
 
     {
       field: "name",
@@ -26,7 +35,7 @@ const Contacts = () => {
     },
 
     {
-      field: "phone",
+      field: "contact",
       headerName: "Phone Number",
       flex: 1,
     },
@@ -125,7 +134,7 @@ const Contacts = () => {
               }}
             >
               <DataGrid
-                rows={mockDataContacts}
+                rows={drivers}
                 columns={columns}
                 components={{ Toolbar: GridToolbar }}
               />
