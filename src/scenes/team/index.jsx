@@ -10,6 +10,7 @@ import "./team.css";
 import { useState } from "react";
 import Form from "../../components/ComapnyMagt/ComapnyForm";
 import ViewCompany from "../../components/ComapnyMagt/ViewCompany";
+import Sidebar from "../global/Sidebar";
 
 const Team = () => {
   const [showForm, setShowForm] = useState(false);
@@ -43,6 +44,7 @@ const Team = () => {
       renderCell: ({ row: { access } }) => {
         return (
           <>
+          <Sidebar/>
           
             <Box
               width="60%"

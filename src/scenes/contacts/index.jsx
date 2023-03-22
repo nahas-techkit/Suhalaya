@@ -7,6 +7,7 @@ import { useTheme } from "@mui/material";
 import { useState } from "react";
 import Form from "../../components/DriverMagt/DriverForm";
 import View from "../../components/DriverMagt/View"
+import Sidebar from "../global/Sidebar";
 
 const Contacts = () => {
   const [showForm, setShowForm] = useState(false);
@@ -58,6 +59,7 @@ const Contacts = () => {
       renderCell: ({ row: { access } }) => {
         return (
           <>
+          <Sidebar/>
             <Box
               width="60%"
               m="0 auto"

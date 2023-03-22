@@ -19,6 +19,8 @@ import Tripsheet from "./components/TripMagt/Tripsheet";
 import Nt from "./components/TripMagt/Nt"
 import Print from "./components/TripMagt/Print"
 import Sign from "./components/TripMagt/Signpad"
+import Login from "./scenes/login/Login";
+import Getdriver from "./components/DriverMagt/getdriver"
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -47,6 +49,8 @@ function App() {
               <Route path="/nt" element={<Nt />} />
               <Route path="/print" element={<Print />} />
               <Route path="/sign" element={<Sign />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/getdriver" element={<Getdriver />} />
 
             </Routes>
           </main>
