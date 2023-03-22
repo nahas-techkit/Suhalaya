@@ -15,12 +15,12 @@ import Geography from "./scenes/geography";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { ColorModeContext, useMode } from "./theme";
 import Calendar from "./scenes/calendar/calendar";
-import Tripsheet from "./components/TripMagt/Tripsheet";
 import Nt from "./components/TripMagt/Nt"
 import Print from "./components/TripMagt/Print"
 import Sign from "./components/TripMagt/Signpad"
 import Login from "./scenes/login/Login";
 import Getdriver from "./components/DriverMagt/getdriver"
+import AuthGuard from "./guards/AuthGuard";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -31,29 +31,31 @@ function App() {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <div className="app">
-          <Sidebar isSidebar={isSidebar} />
-          <main className="content">
-            <Topbar setIsSidebar={setIsSidebar} />
-            <Routes>
-              <Route path="/" element={<Dashboard />} />
-              <Route path="/comapnies" element={<Team />} />
-              <Route path="/drivers" element={<Contacts />} />
-              <Route path="/trips" element={<Invoices />} />
-              <Route path="/form" element={<Form />} />
-              <Route path="/bar" element={<Bar />} />
-              <Route path="/pie" element={<Pie />} />
-              <Route path="/line" element={<Line />} />
-              <Route path="/faq" element={<FAQ />} />
-              <Route path="/calendar" element={<Calendar />} />
-              <Route path="/geography" element={<Geography />} />
-              <Route path="/nt" element={<Nt />} />
-              <Route path="/print" element={<Print />} />
-              <Route path="/sign" element={<Sign />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/getdriver" element={<Getdriver />} />
+          <AuthGuard>
+            <Sidebar isSidebar={isSidebar} />
+            <main className="content">
+              <Topbar setIsSidebar={setIsSidebar} />
+              <Routes>
+                <Route path="/" element={<Dashboard />} />
+                <Route path="/comapnies" element={<Team />} />
+                <Route path="/drivers" element={<Contacts />} />
+                <Route path="/trips" element={<Invoices />} />
+                <Route path="/form" element={<Form />} />
+                <Route path="/bar" element={<Bar />} />
+                <Route path="/pie" element={<Pie />} />
+                <Route path="/line" element={<Line />} />
+                <Route path="/faq" element={<FAQ />} />
+                <Route path="/calendar" element={<Calendar />} />
+                <Route path="/geography" element={<Geography />} />
+                <Route path="/nt" element={<Nt />} />
+                <Route path="/print" element={<Print />} />
+                <Route path="/sign" element={<Sign />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/getdriver" element={<Getdriver />} />
 
-            </Routes>
-          </main>
+              </Routes>
+            </main>
+          </AuthGuard>
         </div>
       </ThemeProvider>
     </ColorModeContext.Provider>

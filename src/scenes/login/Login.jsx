@@ -1,47 +1,90 @@
+import { useFormik } from 'formik';
+import * as Yup from 'yup'
 import React from 'react'
 import "./login.css"
+import { FormHelperText, TextField, Typography } from '@mui/material';
+import useAuth from '../../hook/useAuth';
 
-const Login = props => (
+
+const Login = () => {
+  return (
     <LoginForm />
-);
-  
+  );
+};
 
-class LoginForm extends React.Component{
-  render(){
-    return(
-      <div id="loginform">
-        <FormHeader title="Login" />
-        <Form />
-        <OtherMethods />
-      </div>
-    )
-  }
+
+const LoginForm = () => {
+
+  return (
+    <div id="loginform">
+      <FormHeader title="Login" />
+      <Form />
+      <OtherMethods />
+    </div>
+  )
 }
 
 const FormHeader = props => (
-    <h2 id="headerTitle">{props.title}</h2>
+  <h2 id="headerTitle">{props.title}</h2>
 );
 
 
-const Form = props => (
-   <div>
-     <FormInput description="Username" placeholder="Enter your username" type="text" />
-     <FormInput description="Password" placeholder="Enter your password" type="password"/>
-     <FormButton title="Log in"/>
-   </div>
-);
+const Form = () => {
+  const { login } = useAuth()
+  const LoginSchema = Yup.object().shape({
+    username: Yup.string().email().required(),
+    password: Yup.string().required()
+  })
+  const formik = useFormik({
+    initialValues: {
+      username: "",
+      password: ""
+    },
+    validationSchema: LoginSchema,
+    onSubmit: async (values) => {
+      await login(values)
+    }
+  })
+  const { getFieldProps, values, errors, touched, handleSubmit } = formik
+  return (
+    <form onSubmit={handleSubmit}>
+      <FormInput
+        description="Username"
+        placeholder="Enter your username"
+        type="text"
+        name="username"
+        error={Boolean(touched.username && errors.username)}
+        helperText={touched.username && errors.username}
+        {...getFieldProps('username')}
+      />
+      <FormInput
+        description="Password"
+        placeholder="Enter your password"
+        type="password"
+        error={Boolean(touched.password && errors.password)}
+        helperText={touched.password && errors.password}
+        {...getFieldProps('password')} />
+      <FormButton title="Log in" type='submit' />
+    </form>
+  );
+};
 
 const FormButton = props => (
   <div id="button" class="row">
-    <button>{props.title}</button>
+    <button type={props.type}>{props.title}</button>
   </div>
 );
 
-const FormInput = props => (
+const FormInput = ({ placeholder, type, description, error, touched, helperText, name, ...props }) => (
   <div class="row">
-    <label>{props.description}</label>
-    <input type={props.type} placeholder={props.placeholder}/>
-  </div>  
+    <label>{description}</label>
+    <input type={type} name={name} placeholder={placeholder}{...props} />
+    <FormHelperText error={error}>
+      <Typography>
+        {helperText}
+      </Typography>
+    </FormHelperText>
+  </div>
 );
 
 const OtherMethods = props => (
