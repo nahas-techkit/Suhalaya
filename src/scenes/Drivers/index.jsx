@@ -41,11 +41,7 @@ const Contacts = () => {
       headerName: "Email",
       flex: 1,
     },
-    {
-      field: "address",
-      headerName: "Address",
-      flex: 1,
-    },
+    
     {
       field: "city",
       headerName: "City",
@@ -58,19 +54,7 @@ const Contacts = () => {
       renderCell: ({ row: { access } }) => {
         return (
           <>
-            <Box
-              width="60%"
-              m="0 auto"
-              p="5px"
-              display="flex"
-              justifyContent="center"
-              backgroundColor={colors.greenAccent[700]}
-              borderRadius="4px"
-            >
-              <Typography color={colors.grey[100]} sx={{ ml: "5px" }}>
-                Edit
-              </Typography>
-            </Box>
+           
 
             <Box
               width="60%"

@@ -3,9 +3,9 @@ import { Routes, Route } from "react-router-dom";
 import Topbar from "./scenes/global/Topbar";
 import Sidebar from "./scenes/global/Sidebar";
 import Dashboard from "./scenes/dashboard";
-import Team from "./scenes/team";
-import Invoices from "./scenes/invoices";
-import Contacts from "./scenes/contacts";
+import Company from "./scenes/Company";
+import Trips from "./scenes/Trip";
+import Drivers from "./scenes/Drivers";
 import Bar from "./scenes/bar";
 import Form from "./scenes/form";
 import Line from "./scenes/line";
@@ -34,9 +34,9 @@ function App() {
             <Topbar setIsSidebar={setIsSidebar} />
             <Routes>
               <Route path="/" element={<Dashboard />} />
-              <Route path="/comapnies" element={<Team />} />
-              <Route path="/drivers" element={<Contacts />} />
-              <Route path="/trips" element={<Invoices />} />
+              <Route path="/comapnies" element={<Company />} />
+              <Route path="/drivers" element={<Drivers />} />
+              <Route path="/trips" element={<Trips />} />
               <Route path="/form" element={<Form />} />
               <Route path="/bar" element={<Bar />} />
               <Route path="/pie" element={<Pie />} />
