@@ -3,9 +3,9 @@ import { Routes, Route } from "react-router-dom";
 import Topbar from "./scenes/global/Topbar";
 import Sidebar from "./scenes/global/Sidebar";
 import Dashboard from "./scenes/dashboard";
-import Team from "./scenes/team";
-import Invoices from "./scenes/invoices";
-import Contacts from "./scenes/contacts";
+import Company from "./scenes/Company";
+import Trips from "./scenes/Trip";
+import Drivers from "./scenes/Drivers";
 import Bar from "./scenes/bar";
 import Form from "./scenes/form";
 import Line from "./scenes/line";
@@ -31,27 +31,25 @@ function App() {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <div className="app">
+          <Sidebar isSidebar={isSidebar} />
           <AuthGuard>
-            <Sidebar isSidebar={isSidebar} />
-            <main className="content">
-              <Topbar setIsSidebar={setIsSidebar} />
-              <Routes>
-                <Route path="/" element={<Dashboard />} />
-                <Route path="/comapnies" element={<Team />} />
-                <Route path="/drivers" element={<Contacts />} />
-                <Route path="/trips" element={<Invoices />} />
-                <Route path="/form" element={<Form />} />
-                <Route path="/bar" element={<Bar />} />
-                <Route path="/pie" element={<Pie />} />
-                <Route path="/line" element={<Line />} />
-                <Route path="/faq" element={<FAQ />} />
-                <Route path="/calendar" element={<Calendar />} />
-                <Route path="/geography" element={<Geography />} />
-                <Route path="/nt" element={<Nt />} />
-                <Route path="/print" element={<Print />} />
-                <Route path="/sign" element={<Sign />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/getdriver" element={<Getdriver />} />
+          <main className="content">
+            <Topbar setIsSidebar={setIsSidebar} />
+            <Routes>
+              <Route path="/" element={<Dashboard />} />
+              <Route path="/comapnies" element={<Company />} />
+              <Route path="/drivers" element={<Drivers />} />
+              <Route path="/trips" element={<Trips />} />
+              <Route path="/form" element={<Form />} />
+              <Route path="/bar" element={<Bar />} />
+              <Route path="/pie" element={<Pie />} />
+              <Route path="/line" element={<Line />} />
+              <Route path="/faq" element={<FAQ />} />
+              <Route path="/calendar" element={<Calendar />} />
+              <Route path="/geography" element={<Geography />} />
+              <Route path="/nt" element={<Nt />} />
+              <Route path="/print" element={<Print />} />
+              <Route path="/sign" element={<Sign />} />
 
               </Routes>
             </main>
