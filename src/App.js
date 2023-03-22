@@ -31,25 +31,25 @@ function App() {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <div className="app">
-          <Sidebar isSidebar={isSidebar} />
           <AuthGuard>
-          <main className="content">
-            <Topbar setIsSidebar={setIsSidebar} />
-            <Routes>
-              <Route path="/" element={<Dashboard />} />
-              <Route path="/comapnies" element={<Company />} />
-              <Route path="/drivers" element={<Drivers />} />
-              <Route path="/trips" element={<Trips />} />
-              <Route path="/form" element={<Form />} />
-              <Route path="/bar" element={<Bar />} />
-              <Route path="/pie" element={<Pie />} />
-              <Route path="/line" element={<Line />} />
-              <Route path="/faq" element={<FAQ />} />
-              <Route path="/calendar" element={<Calendar />} />
-              <Route path="/geography" element={<Geography />} />
-              <Route path="/nt" element={<Nt />} />
-              <Route path="/print" element={<Print />} />
-              <Route path="/sign" element={<Sign />} />
+            <Sidebar isSidebar={isSidebar} />
+            <main className="content">
+              <Topbar setIsSidebar={setIsSidebar} />
+              <Routes>
+                <Route path="/" element={<Dashboard />} />
+                <Route path="/comapnies" element={<Company />} />
+                <Route path="/drivers" element={<Drivers />} />
+                <Route path="/trips" element={<Trips />} />
+                <Route path="/form" element={<Form />} />
+                <Route path="/bar" element={<Bar />} />
+                <Route path="/pie" element={<Pie />} />
+                <Route path="/line" element={<Line />} />
+                <Route path="/faq" element={<FAQ />} />
+                <Route path="/calendar" element={<Calendar />} />
+                <Route path="/geography" element={<Geography />} />
+                <Route path="/nt" element={<Nt />} />
+                <Route path="/print" element={<Print />} />
+                <Route path="/sign" element={<Sign />} />
 
               </Routes>
             </main>

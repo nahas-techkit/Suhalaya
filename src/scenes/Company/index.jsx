@@ -43,9 +43,7 @@ const Team = () => {
 
       renderCell: ({ row: { access } }) => {
         return (
-          <>
-          <Sidebar/>
-          
+          <>          
            
 
             <Box
