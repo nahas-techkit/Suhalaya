@@ -10,14 +10,12 @@ const Form = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
 
   const handleFormSubmit = (values,{resetForm}) => {
-    console.log("log");
-    console.log(values);
     axios.post('/api/v1/driver', values)
       .then((res) => {
         resetForm()
         toast.success(res.data.message)
       })
-      .catch((e) => { console.log(e); toast.error(e.response.data.message) })
+      .catch((e) => { toast.error(e.response.data.message) })
   };
 
   return (

@@ -1,4 +1,4 @@
-import { Box, Link, Typography } from "@mui/material";
+import { Box, Button, Link, Typography } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import { mockDataContacts } from "../../data/mockData";
@@ -6,15 +6,17 @@ import Header from "../../components/Header";
 import { useTheme } from "@mui/material";
 import { useEffect, useState } from "react";
 import axios from "../../utils/axiosInstance";
-
+import toast, { Toaster } from "react-hot-toast"
 import { Link as RouterLink } from "react-router-dom";
+import SimpleConfirm from "../../components/alert/SimpleConfirm";
 
-const Contacts = (  ) => {
+const Contacts = () => {
   const [showForm, setShowForm] = useState(false);
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [view, setView] = useState(false);
   const [drivers, setDrivers] = useState([])
+  const [deletDriver, setDeleteDriver] = useState({ show: false, id: null })
 
   useEffect(() => {
     axios.get('/api/v1/driver').then((res) => {
@@ -23,13 +25,32 @@ const Contacts = (  ) => {
     })
   }, [])
 
+  const handleDelete = (id) => {
+    setDeleteDriver({show:false,id:null})
+    axios.delete(`/api/v1/driver/${id}`)
+      .then((res) => {
+
+        toast.success(res.data.message)
+        setDrivers(prevDriver => prevDriver.filter((driver) => driver.id !== id))
+      })
+      .catch((e) => {
+        toast.error(e.response.data.message)
+      })
+  }
+
   const columns = [
     { field: "slNo", headerName: "SL.No", flex: 0.5 },
     { field: "id", headerName: "ID", flex: 0.5 },
 
     {
-      field: "name",
-      headerName: "Name",
+      field: "firstName",
+      headerName: "First name",
+      flex: 1,
+      cellClassName: "name-column--cell",
+    },
+    {
+      field: "lastName",
+      headerName: "Last name",
       flex: 1,
       cellClassName: "name-column--cell",
     },
@@ -68,19 +89,25 @@ const Contacts = (  ) => {
               </Link>
             </Box>
 
-            <Box
-              width="60%"
-              m="0 5px"
-              p="5px"
-              display="flex"
-              justifyContent="center"
-              backgroundColor={colors.redAccent[700]}
-              borderRadius="4px"
+            <Button
+              sx={{
+                width: "60%",
+                m: "0 5px",
+                p: "5px",
+                display: "flex",
+                justifyContent: "center",
+                // backgroundColor:colors.redAccent[700],
+                borderRadius: "4px"
+              }}
+              color='error'
+              variant="contained"
+              onClick={() => setDeleteDriver({ show: true, id })}
+
             >
-              <Typography color={colors.grey[100]} sx={{ ml: "5px" }}>
-                Delete
-              </Typography>
-            </Box>
+              {/* <Typography onclick color={colors.grey[100]} sx={{ ml: "5px" }}> */}
+              Delete
+              {/* </Typography> */}
+            </Button>
           </>
         );
       },
@@ -99,7 +126,11 @@ const Contacts = (  ) => {
               </Link>
             </div>
           </div>
-
+          <SimpleConfirm title={'Delete driver'}
+            message={'Are you sure to delete.'}
+            open={deletDriver.show}
+            onClose={() => setDeleteDriver({show:false,id:null})}
+            onConfirm={() => handleDelete(deletDriver.id)} />
           {
             <Box
               m="40px 0 0 0"
