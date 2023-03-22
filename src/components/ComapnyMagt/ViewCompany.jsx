@@ -95,12 +95,9 @@ function ViewCompany() {
                 variant="filled"
                 type="text"
                 label="Name Of Departent "
-                // onBlur={handleBlur}
-                // onChange={handleChange}
-                // value={values.nameOfComapnie}
+                
                 name="nameOfComapnie"
-                // error={!!touched.nameOfComapnie && !!errors.nameOfComapnie}
-                // helperText={touched.nameOfComapnie && errors.nameOfComapnie}
+               
                 sx={{ gridColumn: "span 5" }}
               />
               <TextField

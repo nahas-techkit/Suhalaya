@@ -96,13 +96,13 @@ const Form = () => {
                 fullWidth
                 variant="filled"
                 type="text"
-                label="Address 1"
+                label="Address"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.address1}
-                name="address1"
-                error={!!touched.address1 && !!errors.address1}
-                helperText={touched.address1 && errors.address1}
+                value={values.address}
+                name="address"
+                error={!!touched.address && !!errors.address}
+                helperText={touched.address && errors.address}
                 sx={{ gridColumn: "span 4" }}
               />
               <TextField
@@ -184,7 +184,7 @@ const checkoutSchema = yup.object().shape({
     .string()
     .matches(phoneRegExp, "Phone number is not valid")
     .required("required"),
-  address1: yup.string().required("required"),
+  address: yup.string().required("required"),
   licenseNo: yup.string().required("required"),
   vehicleNo: yup.string().required("required"),
   vehicleType: yup.string().required("required"),
@@ -195,7 +195,7 @@ const initialValues = {
   lastName:"",
   email: "",
   contact: "",
-  address1: "",
+  address: "",
   licenseNo:"",
   vehicleNo:"",
   vehicleType:"",

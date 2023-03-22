@@ -3,21 +3,32 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
-
+import axios from "../../utils/axiosInstance";
+import toast, { Toaster } from "react-hot-toast";
 const Form = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
 
   const handleFormSubmit = (values) => {
-    console.log("log");
-    console.log(values);
+    let send_data = {
+      name: values?.nameOfComapnie,
+      email: values?.email,
+      number: values?.contact,
+      address: values?.address1,
+    };
+    console.log("values", send_data);
+    
+    axios
+      .post(`/api/v1/company`, send_data)
+      .then((res) => {
+        toast.success(res.data.message);
+        console.log("res data", res?.data);
+      });
   };
 
   return (
     <Box m="20px">
-      <Header
-       
-        subtitle="Create a New Comapnie Profile"
-      />
+      <Toaster />
+      <Header subtitle="Create a New Comapnie Profile" />
 
       <Formik
         onSubmit={handleFormSubmit}
@@ -112,14 +123,13 @@ const phoneRegExp =
 
 const checkoutSchema = yup.object().shape({
   nameOfComapnie: yup.string().required("required"),
-  
+
   email: yup.string().email("invalid email").required("required"),
   contact: yup
     .string()
     .matches(phoneRegExp, "Phone number is not valid")
     .required("required"),
   address1: yup.string().required("required"),
-  
 });
 const initialValues = {
   nameOfComapnie: "",
