@@ -1,14 +1,14 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import './Style.css'
 import Header from "../../components/Header";
-import { Box, TextField, Typography, Modal, Button, useTheme } from "@mui/material";
+import { Box, Modal, Button, useTheme, Stack } from "@mui/material";
 import { useState } from 'react';
 import Add from "../../components/ComapnyMagt/Adddept";
 import AddEmp from "../../components/ComapnyMagt/Addemp"
 import View from "../../components/ComapnyMagt/View"
-import { Link } from 'react-router-dom';
-
-
+import { Link, useParams } from 'react-router-dom';
+import axios from '../../utils/axiosInstance';
+import Swal from 'sweetalert2'
 
 const style = {
   position: 'absolute',
@@ -25,17 +25,48 @@ const style = {
 function ViewCompany() {
   const [dept, setAdddept] = useState(false);
   const [emp, setAddEmp] = useState(false);
-
+  const [company, setCompany] = useState();
+  const { id } = useParams()
   // add department
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const [openDept, setOpenDept] = useState({ show: false, data: null });
+  const handleOpen = () => setOpenDept({ show: true });
+  const handleClose = () => setOpenDept({ show: false });
 
-// add  employee
-  const [openn, setOpenn] = React.useState(false);
-  const handleOpenn = () => setOpenn(true);
-  const handleClosee = () => setOpenn(false);
+  // add  employee
+  const [openEmployee, setOpenEmployee] = useState(false);
+  const handleOpenn = () => setOpenEmployee(true);
+  const handleClosee = () => setOpenEmployee(false);
 
+  useEffect(() => {
+    if (openDept.show || openEmployee) return;
+    const controller = new AbortController()
+    axios.get(`/api/v1/company/${id}`, { signal: controller.signal })
+      .then((res) => setCompany(res.data))
+    return () => {
+      controller.abort()
+    }
+  }, [id, openDept, openEmployee])
+  const deleteDepartment = (id) => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios.delete(`/api/v1/departmet/${id}`).then((res) => {
+          Swal.fire(
+            'Deleted!',
+            'Your file has been deleted.',
+            'success'
+          )
+        })
+      }
+    })
+  }
 
   return (
     <>
@@ -46,16 +77,16 @@ function ViewCompany() {
             <Header title="COMPANIES" subtitle="Managing the companies" />
 
             <div>
-              <div className='viewcompany-button'>
-                <button style={{backgroundColor: "green"}} >Edit</button >
-                
+              <Stack direction='row' spacing={2} justifyContent={'end'}>
+                <button className="btn_blue"  >Edit</button >
+
                 {/* <Link className="edit-link" to={"/edit-student/" + this.props.obj._id}>
                         Edit
                     </Link> */}
-                    
-                <button className="btn_blue"  onClick={handleOpen}>Add Departtment</button >
+
+                <button className="btn_blue" onClick={handleOpen}>Add Departtment</button >
                 <button className="btn_blue" onClick={handleOpenn}>Add Employee</button>
-              </div>             
+              </Stack>
             </div>
           </div>
           {dept && <Add />}
@@ -63,166 +94,35 @@ function ViewCompany() {
         </div>
       </Box>
       <div className='company details'>
-        <View />
+        <View company={company}
+          onEditDep={(data) => {
+            setOpenDept({ show: true, data })
+          }}
+          onDeleteDep={deleteDepartment}
+        />
       </div>
- 
+
       <Modal
-        open={open}
+        open={openDept.show}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description" >
         <Box sx={style}>
-          {/* <Typography id="modal-modal-title" variant="h6" component="h2">
-            Text in a modal
-          </Typography> */}
-          <div>
-            <div className="comapny-management">
-              <Header title="" subtitle="Add Department" />
-            </div>
-            <Box
-              width="70%"
-              m="0 auto"
-              p="5px"
-              display="grid"
-              gap="30px"
-              gridTemplateColumns="repeat(4, minmax(0, 1fr))"
-              // display="flex"
-              justifyContent="center"
-              // backgroundColor={colors.greenAccent[700]}
-              borderRadius="4px">
-              <TextField
-                fullWidth
-                variant="filled"
-                type="text"
-                label="Name Of Departent "
-                
-                name="nameOfComapnie"
-               
-                sx={{ gridColumn: "span 5" }}
-              />
-              <TextField
-                fullWidth
-                variant="filled"
-                type="text"
-                label="Department id "
-                // onBlur={handleBlur}
-                // onChange={handleChange}
-                // value={values.nameOfComapnie}
-                name="nameOfComapnie"
-                // error={!!touched.nameOfComapnie && !!errors.nameOfComapnie}
-                // helperText={touched.nameOfComapnie && errors.nameOfComapnie}
-                sx={{ gridColumn: "span 5" }}
-              />
-              <div>
-                <button className="btn_blue" >Sumbmit</button>
-              </div>
-              <Box>
-              </Box>
-            </Box>
-          </div>
+          <Add handleClose={handleClose} data={openDept.data} />
         </Box>
       </Modal>
 
 
 
       {/* add employee */}
- 
+
       <Modal
-        open={openn}
+        open={openEmployee}
         onClose={handleClosee}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description">
         <Box sx={style}>
-          {/* <Typography id="modal-modal-title" variant="h6" component="h2">
-            Text in a modal
-          </Typography> */}
-          <div>
-            <div className="comapny-management">
-              <Header title="" subtitle="Add Employee" />
-            </div>
-            <Box
-              width="70%"
-              m="0 auto"
-              p="5px"
-              display="grid"
-              gap="30px"
-              gridTemplateColumns="repeat(4, minmax(0, 1fr))"
-              // display="flex"
-              justifyContent="center"
-              // backgroundColor={colors.greenAccent[700]}
-              borderRadius="4px">
-              <TextField
-                fullWidth
-                variant="filled"
-                type="text"
-                label="Name  "
-                // onBlur={handleBlur}
-                // onChange={handleChange}
-                // value={values.nameOfComapnie}
-                name="nameOfComapnie"
-                // error={!!touched.nameOfComapnie && !!errors.nameOfComapnie}
-                // helperText={touched.nameOfComapnie && errors.nameOfComapnie}
-                sx={{ gridColumn: "span 5" }}
-              />
-              <TextField
-                fullWidth
-                variant="filled"
-                type="text"
-                label="Mobile "
-                // onBlur={handleBlur}
-                // onChange={handleChange}
-                // value={values.nameOfComapnie}
-                name="nameOfComapnie"
-                // error={!!touched.nameOfComapnie && !!errors.nameOfComapnie}
-                // helperText={touched.nameOfComapnie && errors.nameOfComapnie}
-                sx={{ gridColumn: "span 5" }}
-              />
-              <TextField
-                fullWidth
-                variant="filled"
-                type="text"
-                label="Email "
-                // onBlur={handleBlur}
-                // onChange={handleChange}
-                // value={values.nameOfComapnie}
-                name="nameOfComapnie"
-                // error={!!touched.nameOfComapnie && !!errors.nameOfComapnie}
-                // helperText={touched.nameOfComapnie && errors.nameOfComapnie}
-                sx={{ gridColumn: "span 5" }}
-              />
-              <TextField
-                fullWidth
-                variant="filled"
-                type="text"
-                label="Address "
-                // onBlur={handleBlur}
-                // onChange={handleChange}
-                // value={values.nameOfComapnie}
-                name="nameOfComapnie"
-                // error={!!touched.nameOfComapnie && !!errors.nameOfComapnie}
-                // helperText={touched.nameOfComapnie && errors.nameOfComapnie}
-                sx={{ gridColumn: "span 5" }}
-              />
-              <TextField
-                fullWidth
-                variant="filled"
-                type="text"
-                label="Department "
-                // onBlur={handleBlur}
-                // onChange={handleChange}
-                // value={values.nameOfComapnie}
-                name="nameOfComapnie"
-                // error={!!touched.nameOfComapnie && !!errors.nameOfComapnie}
-                // helperText={touched.nameOfComapnie && errors.nameOfComapnie}
-                sx={{ gridColumn: "span 5" }}
-              />
-              <div>
-                <button className="btn_blue" >Sumbmit</button>
-              </div>
-              <Box>
-              </Box>
-            </Box>
-          </div>
+          <AddEmp setOpenEmployee={setOpenEmployee} />
         </Box>
       </Modal>
     </>

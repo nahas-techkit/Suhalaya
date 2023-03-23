@@ -11,10 +11,8 @@ import { Link as RouterLink } from "react-router-dom";
 import SimpleConfirm from "../../components/alert/SimpleConfirm";
 
 const Contacts = () => {
-  const [showForm, setShowForm] = useState(false);
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const [view, setView] = useState(false);
   const [drivers, setDrivers] = useState([])
   const [deletDriver, setDeleteDriver] = useState({ show: false, id: null })
 

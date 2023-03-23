@@ -1,19 +1,25 @@
-import { Box, Button, InputLabel, MenuItem, Select, FormControl, TextField } from "@mui/material";
+import { Box, Button, InputLabel, MenuItem, Select, FormControl, TextField, Grid, List, Typography } from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
 import * as React from 'react';
+import DepartmentSigle from "./DepartmentSigle";
+import EmployeeSigle from "./EmployeeSigle";
+import axios from "../../utils/axiosInstance";
+import { useParams } from "react-router-dom";
+import toast from "react-hot-toast";
 
 
-const Form = () => {
+const Form = ({ company, onEditDep, onDeleteDep }) => {
     const isNonMobile = useMediaQuery("(min-width:600px)");
-
+    const { id } = useParams()
     const handleFormSubmit = (values) => {
-        console.log("log");
         console.log(values);
+        axios.put(`/api/v1/company/${id}`, values)
+            .then((res) => toast.success(res.data.message))
+            .catch((e) => toast.error(e.response.data.message))
     };
-
     const [dept, setDept] = React.useState('');
     const [emp, setEmp] = React.useState('');
 
@@ -21,13 +27,14 @@ const Form = () => {
         <Box m="20px">
             <Header
 
-                subtitle="Employee Details"
+                subtitle="Company Details"
             />
 
             <Formik
                 onSubmit={handleFormSubmit}
-                initialValues={initialValues}
+                initialValues={company || {}}
                 validationSchema={checkoutSchema}
+                enableReinitialize
             >
                 {({
                     values,
@@ -36,6 +43,7 @@ const Form = () => {
                     handleBlur,
                     handleChange,
                     handleSubmit,
+                    getFieldProps
                 }) => (
                     <form onSubmit={handleSubmit}>
                         <Box
@@ -50,13 +58,13 @@ const Form = () => {
                                 fullWidth
                                 variant="filled"
                                 type="text"
-                                label="Name Of Company "
-                                onBlur={handleBlur}
-                                onChange={handleChange}
-                                value={values.nameOfComapnie}
-                                name="nameOfComapnie"
-                                error={!!touched.nameOfComapnie && !!errors.nameOfComapnie}
-                                helperText={touched.nameOfComapnie && errors.nameOfComapnie}
+                                label="Name"
+                                {...getFieldProps('name')}
+                                InputLabelProps={{
+                                    shrink: Boolean(values.name),
+                                }}
+                                error={!!touched.name && !!errors.name}
+                                helperText={touched.name && errors.name}
                                 sx={{ gridColumn: "span 4" }}
                             />
                             <TextField
@@ -64,12 +72,12 @@ const Form = () => {
                                 variant="filled"
                                 type="text"
                                 label="Contact Number"
-                                onBlur={handleBlur}
-                                onChange={handleChange}
-                                value={values.contact}
-                                name="contact"
-                                error={!!touched.contact && !!errors.contact}
-                                helperText={touched.contact && errors.contact}
+                                {...getFieldProps('number')}
+                                InputLabelProps={{
+                                    shrink: Boolean(values.number),
+                                }}
+                                error={!!touched.number && !!errors.number}
+                                helperText={touched.number && errors.number}
                                 sx={{ gridColumn: "span 4" }}
                             />
 
@@ -78,50 +86,14 @@ const Form = () => {
                                 variant="filled"
                                 type="text"
                                 label="Email"
-                                onBlur={handleBlur}
-                                onChange={handleChange}
-                                value={values.email}
-                                name="email"
+                                {...getFieldProps('email')}
+                                InputLabelProps={{
+                                    shrink: Boolean(values.email),
+                                }}
                                 error={!!touched.email && !!errors.email}
                                 helperText={touched.email && errors.email}
                                 sx={{ gridColumn: "span 4" }}
                             />
-
-                            <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
-                                <InputLabel id="demo-simple-select-standard-label">Select Department</InputLabel>
-                                <Select
-                                    labelId="demo-simple-select-standard-label"
-                                    id="demo-simple-select-standard"
-                                    value={dept}
-                                    onChange={handleChange}
-                                    label="DEpt"
-                                >
-                                    <MenuItem value="">
-                                        <em>None</em>
-                                    </MenuItem>
-                                    <MenuItem value={10}>IT</MenuItem>
-                                    <MenuItem value={20}>Market</MenuItem>
-                                    <MenuItem value={30}>front</MenuItem>
-                                </Select>
-                            </FormControl>
-                            <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
-                                <InputLabel id="demo-simple-select-standard-label">Select Employee</InputLabel>
-                                <Select
-                                    labelId="demo-simple-select-standard-label"
-                                    id="demo-simple-select-standard"
-                                    value={emp}
-                                    onChange={handleChange}
-                                    label="Emp"
-                                >
-                                    <MenuItem value="">
-                                        <em>None</em>
-                                    </MenuItem>
-                                    <MenuItem value={10}>jhon</MenuItem>
-                                    <MenuItem value={20}>don</MenuItem>
-                                    <MenuItem value={30}>saman</MenuItem>
-                                </Select>
-                            </FormControl>
-
 
                         </Box>
                         <Box display="flex" justifyContent="end" mt="20px">
@@ -129,6 +101,27 @@ const Form = () => {
                                 Submit
                             </Button>
                         </Box>
+                        <Grid container spacing={3}>
+                            <Grid item xs={12} md={6} >
+                                <Typography sx={{ mt: 4, mb: 2 }} variant="h4" component="div">
+                                    Department
+                                </Typography>
+                                <List  >
+                                    {company?.department?.map((dep) =>
+                                        <DepartmentSigle data={dep} onEdit={onEditDep} onDelete={onDeleteDep} />)}
+                                </List>
+                            </Grid>
+
+                            <Grid item xs={12} md={6} >
+                                <Typography sx={{ mt: 4, mb: 2 }} variant="h4" component="div">
+                                    Employees
+                                </Typography>
+                                <List >
+                                    {company?.employees?.map((employee) => <EmployeeSigle data={employee} />)}
+                                </List>
+                            </Grid>
+                        </Grid>
+
                     </form>
                 )}
             </Formik>
@@ -140,14 +133,14 @@ const phoneRegExp =
     /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
 
 const checkoutSchema = yup.object().shape({
-    nameOfComapnie: yup.string().required("required"),
+    name: yup.string().required("required"),
 
     email: yup.string().email("invalid email").required("required"),
-    contact: yup
+    number: yup
         .string()
         .matches(phoneRegExp, "Phone number is not valid")
         .required("required"),
-    address1: yup.string().required("required"),
+    // address1: yup.string().required("required"),
 
 });
 const initialValues = {

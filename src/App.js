@@ -1,9 +1,7 @@
-import { useState } from "react";
+import { lazy, Suspense, useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import Topbar from "./scenes/global/Topbar";
 import Sidebar from "./scenes/global/Sidebar";
-import Dashboard from "./scenes/dashboard";
-import Company from "./scenes/Company";
 import Trips from "./scenes/Trip";
 import Drivers from "./scenes/Drivers";
 
@@ -16,6 +14,11 @@ import { Toaster } from "react-hot-toast";
 import ViewCompany from "./components/ComapnyMagt/ViewCompany";
 import ViewDriver from "./components/DriverMagt/View"
 import AddDriver from "./components/DriverMagt/DriverForm"
+import Print from "./components/TripMagt/Print"
+
+const Loadable = (Component) => (props) =>
+  <Suspense fallback={'loading'}><Component {...props} /></Suspense>
+
 function App() {
   const [theme, colorMode] = useMode();
   const [isSidebar, setIsSidebar] = useState(true);
@@ -34,12 +37,15 @@ function App() {
                 <Route path="/" element={<Dashboard />} />
                 <Route path="/comapnies" element={<Company />} />
                 <Route path="/drivers" element={<Drivers />} />
-                <Route path="/trips" element={<Trips />} />
+                <Route path="/trips" >
+                  <Route index element={<Trips />} />
+                  <Route path="print" element={<Print />} />
+                </Route>
                 <Route path="/company/view/:id" element={<ViewCompany />} />
                 <Route path="/company/add-comapny" element={<Form />} />
-                <Route path="/driver/view/:id" element={<ViewDriver/>} />
-                <Route path="/driver/add-driver" element={<AddDriver/>} />
-               
+                <Route path="/driver/view/:id" element={<ViewDriver />} />
+                <Route path="/driver/add-driver" element={<AddDriver />} />
+
               </Routes>
             </main>
           </AuthGuard>
@@ -49,4 +55,6 @@ function App() {
   );
 }
 
+const Company=Loadable(lazy(()=>import('./scenes/Company')))
+const Dashboard=Loadable(lazy(()=>import('./scenes/dashboard')))
 export default App;

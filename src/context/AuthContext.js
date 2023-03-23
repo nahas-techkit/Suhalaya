@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import React, { createContext, useEffect, useState } from 'react'
+import React, { createContext, useEffect, useLayoutEffect, useState } from 'react'
 import axios from '../utils/axiosInstance'
 
 export const AuthContext = createContext({
@@ -22,7 +22,7 @@ function AuthProvider({ children }) {
         console.log(e)
     })
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         getUser()
     }, [])
 
