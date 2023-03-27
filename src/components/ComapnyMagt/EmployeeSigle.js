@@ -10,10 +10,10 @@ function EmployeeSigle({ onDelete,onEdit, data }) {
             <ListItem
                 secondaryAction={
                     <Stack direction={'row'} spacing={2}>
-                        <IconButton onClick={onEdit} edge="end" aria-label="edit">
+                        <IconButton onClick={()=>onEdit(data)} edge="end" aria-label="edit">
                             <EditIcon />
                         </IconButton>
-                        <IconButton onClick={onDelete} edge="end" aria-label="delete">
+                        <IconButton onClick={()=>onDelete(data._id)} edge="end" aria-label="delete">
                             <DeleteIcon />
                         </IconButton>
                     </Stack>

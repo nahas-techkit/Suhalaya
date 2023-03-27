@@ -11,13 +11,16 @@ import { useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 
 
-const Form = ({ company, onEditDep, onDeleteDep }) => {
+const Form = ({ company, onEditDep, onDeleteDep, onEditEmp,isEditable, onDeleteEmp, setEditable }) => {
     const isNonMobile = useMediaQuery("(min-width:600px)");
     const { id } = useParams()
     const handleFormSubmit = (values) => {
         console.log(values);
         axios.put(`/api/v1/company/${id}`, values)
-            .then((res) => toast.success(res.data.message))
+            .then((res) => {
+                setEditable(false)
+                toast.success(res.data.message)
+            })
             .catch((e) => toast.error(e.response.data.message))
     };
     const [dept, setDept] = React.useState('');
@@ -66,6 +69,7 @@ const Form = ({ company, onEditDep, onDeleteDep }) => {
                                 error={!!touched.name && !!errors.name}
                                 helperText={touched.name && errors.name}
                                 sx={{ gridColumn: "span 4" }}
+                                disabled={!isEditable}
                             />
                             <TextField
                                 fullWidth
@@ -79,6 +83,7 @@ const Form = ({ company, onEditDep, onDeleteDep }) => {
                                 error={!!touched.number && !!errors.number}
                                 helperText={touched.number && errors.number}
                                 sx={{ gridColumn: "span 4" }}
+                                disabled={!isEditable}
                             />
 
                             <TextField
@@ -93,11 +98,12 @@ const Form = ({ company, onEditDep, onDeleteDep }) => {
                                 error={!!touched.email && !!errors.email}
                                 helperText={touched.email && errors.email}
                                 sx={{ gridColumn: "span 4" }}
+                                disabled={!isEditable}
                             />
 
                         </Box>
                         <Box display="flex" justifyContent="end" mt="20px">
-                            <Button type="submit" color="secondary" variant="contained">
+                            <Button  disabled={!isEditable} type="submit" color="secondary" variant="contained">
                                 Submit
                             </Button>
                         </Box>
@@ -117,7 +123,8 @@ const Form = ({ company, onEditDep, onDeleteDep }) => {
                                     Employees
                                 </Typography>
                                 <List >
-                                    {company?.employees?.map((employee) => <EmployeeSigle data={employee} />)}
+                                    {company?.employees?.map((employee) => <EmployeeSigle onEdit={onEditEmp} onDelete={onDeleteEmp
+                                    } data={employee} />)}
                                 </List>
                             </Grid>
                         </Grid>

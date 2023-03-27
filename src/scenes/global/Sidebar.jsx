@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
-import { Box, IconButton, Typography, useTheme } from "@mui/material";
+import { Box, Drawer, IconButton, Typography, useTheme } from "@mui/material";
 import { Link } from "react-router-dom";
 import "react-pro-sidebar/dist/css/styles.css";
 import { tokens } from "../../theme";
@@ -60,7 +60,9 @@ const Sidebar = () => {
           color: "#6870fa !important",
         },
       }}
+      style={{ display: 'flex' }}
     >
+      <>
       <ProSidebar collapsed={isCollapsed}>
         <Menu iconShape="square">
           {/* LOGO AND MENU ICON */}
@@ -80,7 +82,7 @@ const Sidebar = () => {
                 ml="15px"
               >
                 <Typography variant="h3" color={colors.grey[100]}>
-                  ADMINIS
+                  ADMINS
                 </Typography>
                 <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
                   <MenuOutlinedIcon />
@@ -91,15 +93,15 @@ const Sidebar = () => {
 
           {!isCollapsed && (
             <Box mb="25px">
-              <Box display="flex" justifyContent="center" alignItems="center">
+              {/* <Box display="flex" justifyContent="center" alignItems="center">
                 <img
                   alt="profile-user"
                   width="100px"
                   height="100px"
                   src={`../../assets/user.png`}
                   style={{ cursor: "pointer", borderRadius: "50%" }}
-                />
-              </Box>
+                /> */}
+              {/* </Box> */}
               <Box textAlign="center">
                 <Typography
                   variant="h2"
@@ -125,13 +127,13 @@ const Sidebar = () => {
               setSelected={setSelected}
             />
 
-            <Typography
+            {!isCollapsed&&<Typography
               variant="h6"
               color={colors.grey[300]}
               sx={{ m: "15px 0 5px 20px" }}
             >
               Management
-            </Typography>
+            </Typography>}
             <Item
               title="Companies"
               to="/comapnies"
@@ -160,6 +162,7 @@ const Sidebar = () => {
           </Box>
         </Menu>
       </ProSidebar>
+      </>
     </Box>
   );
 };

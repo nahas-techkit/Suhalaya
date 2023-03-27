@@ -9,6 +9,8 @@ import View from "../../components/ComapnyMagt/View"
 import { Link, useParams } from 'react-router-dom';
 import axios from '../../utils/axiosInstance';
 import Swal from 'sweetalert2'
+import toast from "react-hot-toast";
+
 
 const style = {
   position: 'absolute',
@@ -33,20 +35,25 @@ function ViewCompany() {
   const handleClose = () => setOpenDept({ show: false });
 
   // add  employee
-  const [openEmployee, setOpenEmployee] = useState(false);
-  const handleOpenn = () => setOpenEmployee(true);
-  const handleClosee = () => setOpenEmployee(false);
+  const [openEmployee, setOpenEmployee] = useState({ show: false, data: null });
+  const handleOpenn = () => setOpenEmployee({ show: true });
+  const handleClosee = () => setOpenEmployee({ show: false });
 
-  useEffect(() => {
-    if (openDept.show || openEmployee) return;
-    const controller = new AbortController()
-    axios.get(`/api/v1/company/${id}`, { signal: controller.signal })
+  const [isEditable, setEditable] = useState(false);
+  const getCompany = (id, controller) => {
+    axios.get(`/api/v1/company/${id}`, { signal: controller?.signal })
       .then((res) => setCompany(res.data))
+
+  }
+  useEffect(() => {
+    if (openDept.show || openEmployee.show) return;
+    const controller = new AbortController()
+    getCompany(id, controller)
     return () => {
       controller.abort()
     }
   }, [id, openDept, openEmployee])
-  const deleteDepartment = (id) => {
+  const deleteDepartment = (depId) => {
     Swal.fire({
       title: 'Are you sure?',
       text: "You won't be able to revert this!",
@@ -57,13 +64,35 @@ function ViewCompany() {
       confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
       if (result.isConfirmed) {
-        axios.delete(`/api/v1/departmet/${id}`).then((res) => {
-          Swal.fire(
-            'Deleted!',
-            'Your file has been deleted.',
-            'success'
-          )
+        axios.delete(`/api/v1/department/${depId}`, { params: { companyId: id } }).then((res) => {
+          getCompany(id)
+          toast.success(res.data.message)
         })
+          .catch((e) => {
+            toast.error(e.response.data.message)
+          })
+      }
+    })
+  }
+
+  const deleteEmployee = (empId) => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios.delete(`/api/v1/employee/${empId}`, { params: { companyId: id } }).then((res) => {
+          getCompany(id)
+          toast.success(res.data.message)
+        })
+          .catch((e) => {
+            toast.error(e.response.data.message)
+          })
       }
     })
   }
@@ -78,7 +107,7 @@ function ViewCompany() {
 
             <div>
               <Stack direction='row' spacing={2} justifyContent={'end'}>
-                <button className="btn_blue"  >Edit</button >
+                <button onClick={() => setEditable(true)} className="btn_blue"  >Edit</button >
 
                 {/* <Link className="edit-link" to={"/edit-student/" + this.props.obj._id}>
                         Edit
@@ -98,7 +127,13 @@ function ViewCompany() {
           onEditDep={(data) => {
             setOpenDept({ show: true, data })
           }}
+          onEditEmp={(data) => {
+            setOpenEmployee({ show: true, data })
+          }}
+          isEditable={isEditable}
+          setEditable={setEditable}
           onDeleteDep={deleteDepartment}
+          onDeleteEmp={deleteEmployee}
         />
       </div>
 
@@ -117,12 +152,12 @@ function ViewCompany() {
       {/* add employee */}
 
       <Modal
-        open={openEmployee}
+        open={openEmployee.show}
         onClose={handleClosee}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description">
         <Box sx={style}>
-          <AddEmp setOpenEmployee={setOpenEmployee} />
+          <AddEmp handleClose={handleClosee} data={openEmployee.data} />
         </Box>
       </Modal>
     </>

@@ -12,18 +12,34 @@ import GeographyChart from "../../components/GeographyChart";
 import BarChart from "../../components/BarChart";
 import StatBox from "../../components/StatBox";
 import ProgressCircle from "../../components/ProgressCircle";
+import ApartmentIcon from '@mui/icons-material/Apartment';
+import CommuteIcon from '@mui/icons-material/Commute';
+import GroupIcon from '@mui/icons-material/Group';
+import axios from "../../utils/axiosInstance";
+import LocalTaxiIcon from '@mui/icons-material/LocalTaxi';
+import { useEffect, useState } from "react";
+import moment from "moment";
 
 const Dashboard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-
+  const [data, setData] = useState()
+  const getData = () => {
+    axios.get('/api/v1/dashboard')
+      .then((res) => {
+        setData(res.data)
+      })
+  }
+  useEffect(() => {
+    getData()
+  }, [])
   return (
     <Box m="20px">
       {/* HEADER */}
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Header title="DASHBOARD" subtitle="Welcome to your dashboard" />
 
-        <Box>
+        {/* <Box>
           <Button
             sx={{
               backgroundColor: colors.blueAccent[700],
@@ -36,7 +52,7 @@ const Dashboard = () => {
             <DownloadOutlinedIcon sx={{ mr: "10px" }} />
             Download Reports
           </Button>
-        </Box>
+        </Box> */}
       </Box>
 
       {/* GRID & CHARTS */}
@@ -55,12 +71,12 @@ const Dashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title="12,361"
-            subtitle="Emails Sent"
-            progress="0.75"
-            increase="+14%"
+            title={data?.activeCompanies}
+            subtitle="Total Companies"
+            // progress="0.75"
+            // increase="+14%"  
             icon={
-              <EmailIcon
+              <ApartmentIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
               />
             }
@@ -74,12 +90,12 @@ const Dashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title="431,225"
-            subtitle="Sales Obtained"
-            progress="0.50"
-            increase="+21%"
+            title={data?.activeTrips}
+            subtitle="Total Active Trips"
+            // progress="0.50"
+            // increase="+21%"
             icon={
-              <PointOfSaleIcon
+              <CommuteIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
               />
             }
@@ -93,12 +109,12 @@ const Dashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title="32,441"
-            subtitle="New Clients"
-            progress="0.30"
-            increase="+5%"
+            title={data?.activeDrivers}
+            subtitle="Total Drivers"
+            // progress="0.30"
+            // increase="+5%"
             icon={
-              <PersonAddIcon
+              <LocalTaxiIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
               />
             }
@@ -112,12 +128,12 @@ const Dashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title="1,325,134"
-            subtitle="Traffic Received"
-            progress="0.80"
-            increase="+43%"
+            title={data?.activeEmployees}
+            subtitle="Total Employees"
+            // progress="0.80"
+            // increase="+43%"
             icon={
-              <TrafficIcon
+              <GroupIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
               />
             }
@@ -126,8 +142,8 @@ const Dashboard = () => {
 
         {/* ROW 2 */}
         <Box
-          gridColumn="span 8"
-          gridRow="span 2"
+          gridColumn="span 7"
+          gridRow="span 3"
           backgroundColor={colors.primary[400]}
         >
           <Box
@@ -145,29 +161,29 @@ const Dashboard = () => {
               >
                 Revenue Generated
               </Typography>
-              <Typography
+              {/* <Typography
                 variant="h3"
                 fontWeight="bold"
                 color={colors.greenAccent[500]}
               >
                 $59,342.32
-              </Typography>
+              </Typography> */}
             </Box>
-            <Box>
+            {/* <Box>
               <IconButton>
                 <DownloadOutlinedIcon
                   sx={{ fontSize: "26px", color: colors.greenAccent[500] }}
                 />
               </IconButton>
-            </Box>
+            </Box> */}
           </Box>
-          <Box height="250px" m="-20px 0 0 0">
-            <LineChart isDashboard={true} />
+          <Box height="80%" m="-20px 0 0 0">
+            <LineChart isDashboard={true} tripData={data?.tripTypeChart} />
           </Box>
         </Box>
         <Box
-          gridColumn="span 4"
-          gridRow="span 2"
+          gridColumn="span 5"
+          gridRow="span 3"
           backgroundColor={colors.primary[400]}
           overflow="auto"
         >
@@ -175,21 +191,21 @@ const Dashboard = () => {
             display="flex"
             justifyContent="space-between"
             alignItems="center"
-            borderBottom={`4px solid ${colors.primary[500]}`}
+            borderBottom={`4px solid ${theme.palette.background.default}`}
             colors={colors.grey[100]}
             p="15px"
           >
             <Typography color={colors.grey[100]} variant="h5" fontWeight="600">
-              Recent Transactions
+              Recent Trips
             </Typography>
           </Box>
-          {mockTransactions.map((transaction, i) => (
+          {data?.recentTrips.map((trip, i) => (
             <Box
-              key={`${transaction.txId}-${i}`}
+              key={`${i}`}
               display="flex"
               justifyContent="space-between"
               alignItems="center"
-              borderBottom={`4px solid ${colors.primary[500]}`}
+              borderBottom={`4px solid ${theme.palette.background.default}`}
               p="15px"
             >
               <Box>
@@ -198,26 +214,29 @@ const Dashboard = () => {
                   variant="h5"
                   fontWeight="600"
                 >
-                  {transaction.txId}
+                  {trip._id}
                 </Typography>
                 <Typography color={colors.grey[100]}>
-                  {transaction.user}
+                  From: {trip.pickupLocation}
+                </Typography>
+                <Typography color={colors.grey[100]}>
+                  To: {trip.dropLocation}
                 </Typography>
               </Box>
-              <Box color={colors.grey[100]}>{transaction.date}</Box>
+              <Box color={colors.grey[100]}>{moment(trip.date).format('DD/MM/YYYY hh:mm a')}</Box>
               <Box
                 backgroundColor={colors.greenAccent[500]}
                 p="5px 10px"
                 borderRadius="4px"
               >
-                ${transaction.cost}
+                ₹{trip.cost}
               </Box>
             </Box>
           ))}
         </Box>
 
         {/* ROW 3 */}
-        <Box
+        {/* <Box
           gridColumn="span 4"
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
@@ -275,7 +294,7 @@ const Dashboard = () => {
           <Box height="200px">
             <GeographyChart isDashboard={true} />
           </Box>
-        </Box>
+        </Box> */}
       </Box>
     </Box>
   );

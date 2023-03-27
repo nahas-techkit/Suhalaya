@@ -2,14 +2,21 @@ import { ResponsiveLine } from "@nivo/line";
 import { useTheme } from "@mui/material";
 import { tokens } from "../theme";
 import { mockLineData as data } from "../data/mockData";
+import { useMemo } from "react";
 
-const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
+const LineChart = ({ isCustomLineColors = false, tripData = [], isDashboard = false }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const chartData = useMemo(() => tripData.map((data) => ({
+    ...data,
+    color: data.id === "Airport Transport" ? tokens("dark").greenAccent[500]
+      : data.id === "Out station"
+        ? tokens("dark").blueAccent[300] : tokens("dark").redAccent[200]
+  })).filter((data) => data.id), [tripData])
 
   return (
     <ResponsiveLine
-      data={data}
+      data={chartData}
       theme={{
         axis: {
           domain: {
@@ -110,6 +117,15 @@ const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
           ],
         },
       ]}
+      tooltip={ ({ point }) => {
+        return (
+          <div>
+            <div>{"Date: "+point.data.xFormatted}</div>
+            <div>{"Average: ₹"+Math.round(point.data.y)}</div>
+          </div>
+        );
+      }
+      }
     />
   );
 };
