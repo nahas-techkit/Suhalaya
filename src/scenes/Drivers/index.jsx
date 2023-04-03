@@ -66,7 +66,7 @@ const Contacts = () => {
 
     {
       field: "zipCode",
-      headerName: "Menage",
+      headerName: "Manage",
       flex: 1,
       renderCell: ({ row: { id } }) => {
         return (

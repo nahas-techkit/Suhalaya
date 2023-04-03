@@ -311,7 +311,7 @@ const Form = () => {
             <Typography fullWidth sx={{ gridColumn: "span 4" }}>
               Driver Details
             </Typography>
-            {(!id || id && drivers && drivers.length && values?.driver) && <Autocomplete
+            <Autocomplete
               disablePortal
               id="combo-box-demo"
               options={drivers}
@@ -338,7 +338,8 @@ const Form = () => {
                 setFieldValue("vehicleModel", value.vehicleModel, true)
               }}
               disabled={!editable}
-            />}
+              value={values.driver || null}
+            />
             <TextField
               fullWidth
               variant="filled"
