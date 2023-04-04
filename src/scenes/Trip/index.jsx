@@ -92,7 +92,6 @@ const Invoices = () => {
         <Stack direction='row' spacing={2}>
           <Button
             variant='contained'
-            color='secondary'
             LinkComponent={RouterLink}
             to={'edit/' + row.id}
           >View</Button>
@@ -128,7 +127,7 @@ const Invoices = () => {
         <div className="comapny-management">
           <Header title="TRIPS" subtitle="Manage the trips" />
           <Stack direction='row' justifyContent={'end'}>
-            <Button color='secondary' variant="contained" LinkComponent={RouterLink} to="create" >Create New Trip</Button>
+            <Button  variant="contained" LinkComponent={RouterLink} to="create" >Create New Trip</Button>
           </Stack>
         </div>
 

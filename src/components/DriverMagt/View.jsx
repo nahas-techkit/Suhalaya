@@ -261,7 +261,7 @@ const Form = () => {
                 />
               </Box>
               <Box display="flex" justifyContent="end" mt="20px">
-                <Button type="submit" disabled={!edit||!isValid} color="secondary" variant="contained">
+                <Button type="submit" disabled={!edit||!isValid} variant="contained">
                   Submit
                 </Button>
               </Box>

@@ -177,7 +177,7 @@ const Dashboard = () => {
               </IconButton>
             </Box> */}
           </Box>
-          <Box height="80%" m="-20px 0 0 0">
+          <Box height="80%" sx={{m:2}}>
             <LineChart isDashboard={true} tripData={data?.tripTypeChart} />
           </Box>
         </Box>

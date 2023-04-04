@@ -2,7 +2,6 @@ import { useState } from "react";
 import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
 import { Box, Drawer, IconButton, Typography, useTheme } from "@mui/material";
 import { Link } from "react-router-dom";
-import "react-pro-sidebar/dist/css/styles.css";
 import { tokens } from "../../theme";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
@@ -16,155 +15,78 @@ import PieChartOutlineOutlinedIcon from "@mui/icons-material/PieChartOutlineOutl
 import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
+import useResponsive from "../../hook/useResponsive";
+import navConfig from "./config";
+import NavSection from "../../layouts/dashboard/nav-section";
 
-const Item = ({ title, to, icon, selected, setSelected }) => {
+
+const Sidebar = ({ isCollapsed, setIsCollapsed }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  return (
-    <MenuItem
-      active={selected === title}
-      style={{
-        color: colors.grey[100],
-      }}
-      onClick={() => setSelected(title)}
-      icon={icon}
-    >
-      <Typography>{title}</Typography>
-      <Link to={to} />
-    </MenuItem>
-  );
-};
-
-const Sidebar = () => {
-  const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
-  const [isCollapsed, setIsCollapsed] = useState(false);
   const [selected, setSelected] = useState("Dashboard");
+  const isDesktop = useResponsive('up', 'lg');
+  const NAV_WIDTH = 280;
 
-  return (
-    <Box
-      sx={{
-        "& .pro-sidebar-inner": {
-          background: `${colors.primary[400]} !important`,
-        },
-        "& .pro-icon-wrapper": {
-          backgroundColor: "transparent !important",
-        },
-        "& .pro-inner-item": {
-          padding: "5px 35px 5px 20px !important",
-        },
-        "& .pro-inner-item:hover": {
-          color: "#868dfb !important",
-        },
-        "& .pro-menu-item.active": {
-          color: "#6870fa !important",
-        },
-      }}
-      style={{ display: 'flex' }}
-    >
-      <>
-      <ProSidebar collapsed={isCollapsed}>
-        <Menu iconShape="square">
-          {/* LOGO AND MENU ICON */}
-          <MenuItem
-            onClick={() => setIsCollapsed(!isCollapsed)}
-            icon={isCollapsed ? <MenuOutlinedIcon /> : undefined}
-            style={{
-              margin: "10px 0 20px 0",
-              color: colors.grey[100],
-            }}
-          >
-            {!isCollapsed && (
-              <Box
-                display="flex"
-                justifyContent="space-between"
-                alignItems="center"
-                ml="15px"
-              >
-                <Typography variant="h3" color={colors.grey[100]}>
-                  ADMINS
-                </Typography>
-                <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
-                  <MenuOutlinedIcon />
-                </IconButton>
-              </Box>
-            )}
-          </MenuItem>
+  const renderContent = 
+  <>
+    <Box sx={{my:"30px"}}>
 
-          {!isCollapsed && (
-            <Box mb="25px">
-              {/* <Box display="flex" justifyContent="center" alignItems="center">
-                <img
-                  alt="profile-user"
-                  width="100px"
-                  height="100px"
-                  src={`../../assets/user.png`}
-                  style={{ cursor: "pointer", borderRadius: "50%" }}
-                /> */}
-              {/* </Box> */}
-              <Box textAlign="center">
-                <Typography
-                  variant="h2"
-                  color={colors.grey[100]}
-                  fontWeight="bold"
-                  sx={{ m: "10px 0 0 0" }}
-                >
-                  SUHALAYA
-                </Typography>
-                <Typography variant="h5" color={colors.greenAccent[500]}>
-                  Book Your Cab
-                </Typography>
-              </Box>
-            </Box>
-          )}
-
-          <Box paddingLeft={isCollapsed ? undefined : "10%"}>
-            <Item
-              title="Dashboard"
-              to="/"
-              icon={<HomeOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-
-            {!isCollapsed&&<Typography
-              variant="h6"
-              color={colors.grey[300]}
-              sx={{ m: "15px 0 5px 20px" }}
-            >
-              Management
-            </Typography>}
-            <Item
-              title="Companies"
-              to="/comapnies"
-              icon={<PeopleOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="Drivers"
-              to="/drivers"
-              icon={<ContactsOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="Trips"
-              to="/trips"
-              icon={<ReceiptOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-
-            
-            
-           
-          </Box>
-        </Menu>
-      </ProSidebar>
-      </>
+      <Box textAlign="center">
+      <Typography variant="h3" color={colors.grey[100]}>
+        ADMINS
+      </Typography>
+        <Typography
+          variant="h2"
+          color={colors.grey[100]}
+          fontWeight="bold"
+          sx={{ m: "10px 0 0 0" }}
+        >
+          SUHALAYA
+        </Typography>
+        <Typography variant="h5" color={colors.greenAccent[500]}>
+          Book Your Cab
+        </Typography>
+      </Box>
     </Box>
-  );
+
+    <NavSection data={navConfig} />
+  </ >
+  return (<Box
+    component="nav"
+    sx={{
+      flexShrink: { lg: 0 },
+      width: { lg: NAV_WIDTH },
+    }}
+  >
+    {isDesktop ? (
+      <Drawer
+        open
+        variant="permanent"
+        PaperProps={{
+          sx: {
+            width: NAV_WIDTH,
+            bgcolor: 'background.default',
+            borderRightStyle: 'dashed',
+          },
+        }}
+      >
+        {renderContent}
+      </Drawer>
+    ) : (
+      <Drawer
+        open={isCollapsed}
+        onClose={() => setIsCollapsed(false)}
+        ModalProps={{
+          keepMounted: true,
+        }}
+        PaperProps={{
+          sx: { bgcolor: 'background.default',width: NAV_WIDTH },
+        }}
+      >
+        {renderContent}
+      </Drawer>
+    )}
+  </Box>)
 };
 
 export default Sidebar;

@@ -18,9 +18,9 @@ import AddDriver from "./components/DriverMagt/DriverForm"
 import Print from "./components/TripMagt/Print"
 import DashBoardLayout from "./layouts/dashboard"
 import TripStatus from "./scenes/Trip/TripStatus";
+import Company from './scenes/Company'
+import Dashboard from './scenes/dashboard'
 
-const Loadable = (Component) => (props) =>
-  <Suspense fallback={<></>}><Component {...props} /></Suspense>
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -53,7 +53,7 @@ function App() {
               <Route path="/driver/add-driver" element={<AddDriver />} />
             </Route>
             <Route path="/trip/status/:id" element={
-            <> <main className="content"><Topbar  /> <TripStatus /></main></>} />          </Routes>
+              <> <main className="content"><Topbar /> <TripStatus /></main></>} />          </Routes>
           {/* </main> */}
         </div>
       </ThemeProvider>
@@ -61,6 +61,4 @@ function App() {
   );
 }
 
-const Company = Loadable(lazy(() => import('./scenes/Company')))
-const Dashboard = Loadable(lazy(() => import('./scenes/dashboard')))
 export default App;

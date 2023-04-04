@@ -5,6 +5,8 @@ import ReactToPrint from "react-to-print";
 import axios from "../../utils/axiosInstance";
 import "./pt.css"
 import Signpad from "./Signpad";
+import humanizeDuration from '../../utils/humanizeDuration'
+import { fDateTime } from "../../utils/formatTime";
 
 export default function PrintComponent() {
   const componentRef = useRef();
@@ -34,7 +36,7 @@ export default function PrintComponent() {
       <div>
         {/* button to trigger printing of target component */}
         <ReactToPrint
-          trigger={() => <Button sx={{ml:2}} variant="contained" size='large' color='secondary' >PRINT</Button>}
+          trigger={() => <Button sx={{ml:2}} variant="contained" size='large'  >PRINT</Button>}
           content={() => componentRef.current}
         />
 
@@ -100,16 +102,16 @@ const ComponentToPrint = forwardRef(({ trip }, ref) => {
           <ContentText>Pickup Location : {trip?.pickupLocation}</ContentText>
           <ContentText>Drop Location : {trip?.dropLocation}</ContentText>
           <ContentText>Trip Type : {trip?.tripType}</ContentText>
-          <ContentText>Extra Location : {trip?.extraLocation}</ContentText>
-          <ContentText>Date : {trip?.date}</ContentText>
+          {/* <ContentText>Extra Location : {trip?.extraLocation}</ContentText> */}
+          <ContentText>Date : {fDateTime(trip?.date)}</ContentText>
         </Grid>
         <Grid item md={6}>
           <ContentText>Vehicle Type : {trip?.vehicleType}</ContentText>
           <ContentText>Vehicle Model : {trip?.vehicleModel}</ContentText>
           <ContentText>Total Km : {trip?.totalKM} km</ContentText>
-          <ContentText>Extra Km : {trip?.extraKM} km</ContentText>
-          <ContentText>Expecting Time : {trip?.expectedTime}</ContentText>
-          <ContentText>Extra Time : {trip?.extraHour}</ContentText>
+          {/* <ContentText>Extra Km : {trip?.extraKM} km</ContentText> */}
+          <ContentText>Expecting Time : {humanizeDuration(trip?.expectedTime)}</ContentText>
+          {/* <ContentText>Extra Time : {trip?.extraHour}</ContentText> */}
         </Grid>
       </Content>
       <diV className="heading">

@@ -120,7 +120,8 @@ function Addemp({ handleClose, data }) {
                 helperText={touched.department && errors.department}
                 sx={{ gridColumn: "span 5" }}
               />
-              <Button type="submit" color="secondary" variant="contained">
+              <Button type="submit" 
+              variant="contained">
                 Submit
               </Button>
             </Box>

@@ -45,29 +45,18 @@ const Team = () => {
       headerName: "Manage",
       flex: 1,
 
-      renderCell: ({ row: { access, id } }) => {
+      renderCell: ({ row: { access, _id } }) => {
         return (
           <>
-            <Box
-              width="60%"
-              m="0 5px"
-              p="5px"
-              display="flex"
-              justifyContent="center"
-              backgroundColor={colors.blueAccent[700]}
-              borderRadius="4px"
-            >
-              <Link component={RouterLink} to={`/company/view/${id}`}>
-                <Typography color={colors.grey[100]} sx={{ ml: "5px" }}>
-                  View
-                </Typography>
-              </Link>
-            </Box>
+
+            <Button variant='contained' component={RouterLink} to={`/company/view/${_id}`}>
+              View
+            </Button>
 
             <Button
               variant='contained'
               color='error'
-              onClick={() => handleDelete(id)}
+              onClick={() => handleDelete(_id)}
             >
               Delete
             </Button>
@@ -89,7 +78,8 @@ const Team = () => {
         res.data.companies.map((company, i) => {
           return {
             SlNo: i + 1,
-            id: company?._id,
+            id: company?.id || company?._id,
+            _id: company?._id,
             name: company?.name,
             email: company?.email,
             phone: company?.number,
