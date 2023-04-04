@@ -6,7 +6,8 @@ export const AuthContext = createContext({
     user: null,
     login: () => Promise.resolve(),
     register: () => Promise.resolve(),
-    logout: () => { }
+    logout: () => { },
+    loading:false
 })
 
 AuthProvider.propTypes = {
@@ -15,14 +16,16 @@ AuthProvider.propTypes = {
 
 function AuthProvider({ children }) {
     const [user, setUser] = useState(null)
+    const [loading, setLoading] = useState(false)
 
     const getUser = () => axios.get('/api/v1/users/user').then((res) => {
         setUser(res.data)
     }).catch((e) => {
         console.log(e)
-    })
+    }).finally(() => setLoading(false))
 
     useLayoutEffect(() => {
+        setLoading(true)
         getUser()
     }, [])
 
@@ -52,7 +55,7 @@ function AuthProvider({ children }) {
         setUser(null)
     }
     return (
-        <AuthContext.Provider value={{ user, register, login, logout }}>{children}</AuthContext.Provider>
+        <AuthContext.Provider value={{ user, register, login, logout,loading }}>{children}</AuthContext.Provider>
     )
 }
 
