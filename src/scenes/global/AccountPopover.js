@@ -1,33 +1,43 @@
-import { useState } from 'react';
+import { useMemo, useState } from "react";
 // @mui
-import { alpha } from '@mui/material/styles';
-import { Box, Divider, Typography, Stack, MenuItem, Avatar, IconButton, Popover } from '@mui/material';
-import useAuth from '../../hook/useAuth'
-
-const MENU_OPTIONS = [
-  {
-    label: 'Home',
-    icon: 'eva:home-fill',
-  },
-  {
-    label: 'Profile',
-    icon: 'eva:person-fill',
-  },
-  {
-    label: 'Settings',
-    icon: 'eva:settings-2-fill',
-  },
-];
+import { alpha } from "@mui/material/styles";
+import {
+  Box,
+  Divider,
+  Typography,
+  Stack,
+  MenuItem,
+  Avatar,
+  IconButton,
+  Popover,
+} from "@mui/material";
+import useAuth from "../../hook/useAuth";
+import { Link as RouterLink } from "react-router-dom";
 
 // ----------------------------------------------------------------------
 
 export default function AccountPopover() {
   const [open, setOpen] = useState(null);
-  const { user, logout } = useAuth()
+  const { user, logout } = useAuth();
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
   };
-
+  const MENU_OPTIONS = useMemo(
+    () => [
+      user?.role === "admin"
+        ? {
+            label: "Home",
+            icon: "eva:home-fill",
+            path: "/",
+          }
+        : {
+            label: "Profile",
+            icon: "eva:person-fill",
+            path: `/driver/profile/${user?._id}`,
+          },
+    ],
+    [user]
+  );
   const handleClose = () => {
     setOpen(null);
   };
@@ -39,13 +49,13 @@ export default function AccountPopover() {
         sx={{
           p: 0,
           ...(open && {
-            '&:before': {
+            "&:before": {
               zIndex: 1,
               content: "''",
-              width: '100%',
-              height: '100%',
-              borderRadius: '50%',
-              position: 'absolute',
+              width: "100%",
+              height: "100%",
+              borderRadius: "50%",
+              position: "absolute",
               bgcolor: (theme) => alpha(theme.palette.grey[900], 0.8),
             },
           }),
@@ -58,16 +68,16 @@ export default function AccountPopover() {
         open={Boolean(open)}
         anchorEl={open}
         onClose={handleClose}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+        transformOrigin={{ vertical: "top", horizontal: "right" }}
         PaperProps={{
           sx: {
             p: 0,
             mt: 1.5,
             ml: 0.75,
             width: 180,
-            '& .MuiMenuItem-root': {
-              typography: 'body2',
+            "& .MuiMenuItem-root": {
+              typography: "body2",
               borderRadius: 0.75,
             },
           },
@@ -75,24 +85,31 @@ export default function AccountPopover() {
       >
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography variant="subtitle2" noWrap>
-            {user?.username}
+            {user?.email}
           </Typography>
-          {/* <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-            {user?.username}
-          </Typography> */}
+          {user?.firstName && user?.lastName && (
+            <Typography variant="body2" sx={{ color: "text.secondary" }} noWrap>
+              {user?.firstName + " " + user?.lastName}
+            </Typography>
+          )}
         </Box>
 
-        <Divider sx={{ borderStyle: 'dashed' }} />
+        <Divider sx={{ borderStyle: "dashed" }} />
 
         <Stack sx={{ p: 1 }}>
           {MENU_OPTIONS.map((option) => (
-            <MenuItem key={option.label} onClick={handleClose}>
+            <MenuItem
+              component={RouterLink}
+              to={option.path}
+              key={option.label}
+              onClick={handleClose}
+            >
               {option.label}
             </MenuItem>
           ))}
         </Stack>
 
-        <Divider sx={{ borderStyle: 'dashed' }} />
+        <Divider sx={{ borderStyle: "dashed" }} />
 
         <MenuItem onClick={logout} sx={{ m: 1 }}>
           Logout

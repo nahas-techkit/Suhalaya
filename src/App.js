@@ -13,14 +13,16 @@ import { ColorModeContext, useMode } from "./theme";
 import AuthGuard from "./guards/AuthGuard";
 import { Toaster } from "react-hot-toast";
 import ViewCompany from "./components/ComapnyMagt/ViewCompany";
-import ViewDriver from "./components/DriverMagt/View"
-import AddDriver from "./components/DriverMagt/DriverForm"
-import Print from "./components/TripMagt/Print"
-import DashBoardLayout from "./layouts/dashboard"
+import ViewDriver from "./components/DriverMagt/View";
+import AddDriver from "./components/DriverMagt/DriverForm";
+import Print from "./components/TripMagt/Print";
+import DashBoardLayout from "./layouts/dashboard";
+import SimpleLayout from "./layouts/simple";
 import TripStatus from "./scenes/Trip/TripStatus";
-import Company from './scenes/Company'
-import Dashboard from './scenes/dashboard'
-
+import Company from "./scenes/Company";
+import Dashboard from "./scenes/dashboard";
+import RoleBasedGuard from "./guards/RoleBasedGuard";
+import Profile from "./components/DriverMagt/Profile";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -32,16 +34,24 @@ function App() {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <div className="app">
-
           {/* <Sidebar isSidebar={isSidebar} /> */}
           {/* <main className="content"> */}
           {/* <Topbar setIsSidebar={setIsSidebar} /> */}
           <Routes>
-            <Route path="/" element={<AuthGuard><DashBoardLayout /></AuthGuard>}>
+            <Route
+              path="/"
+              element={
+                <AuthGuard>
+                  <RoleBasedGuard roles={["admin"]} hasContent>
+                    <DashBoardLayout />
+                  </RoleBasedGuard>
+                </AuthGuard>
+              }
+            >
               <Route path="/" element={<Dashboard />} index />
               <Route path="/comapnies" element={<Company />} />
               <Route path="/drivers" element={<Drivers />} />
-              <Route path="/trips" >
+              <Route path="/trips">
                 <Route index element={<Trips />} />
                 <Route path="print/:id" element={<Print />} />
                 <Route path="create" element={<CreateTrip />} />
@@ -52,8 +62,30 @@ function App() {
               <Route path="/driver/view/:id" element={<ViewDriver />} />
               <Route path="/driver/add-driver" element={<AddDriver />} />
             </Route>
-            <Route path="/trip/status/:id" element={
-              <> <main className="content"><Topbar /> <TripStatus /></main></>} />          </Routes>
+            <Route
+              path="/driver"
+              element={
+                <AuthGuard>
+                  <SimpleLayout />
+                </AuthGuard>
+              }
+            >
+              <Route path="profile/:id" index element={<Profile />} />
+              <Route path="trips/print/:id" element={<Print />} />
+              <Route path="trips/status/:id" element={<TripStatus />} />
+            </Route>
+            <Route
+              path="/trip/status/:id"
+              element={
+                <>
+                  <main className="content" style={{ marginTop: 25 }}>
+                    {/* <Topbar /> */}
+                    <TripStatus />
+                  </main>
+                </>
+              }
+            />
+          </Routes>
           {/* </main> */}
         </div>
       </ThemeProvider>

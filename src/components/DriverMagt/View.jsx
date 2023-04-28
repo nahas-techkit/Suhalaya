@@ -63,7 +63,7 @@ const Form = () => {
         <div className='ViewCompany'>
           <div className="comapny-management">
             <Toaster/>
-            <Header title="COMPANIES" subtitle="Managing the Drivers" />
+            <Header title="Driver" subtitle="Managing the Drivers" />
             <div>
               <div className='viewcompany-button'>
                 <Button onClick={()=>setEdit(true)} style={{ backgroundColor: "green" }} >Edit</Button >

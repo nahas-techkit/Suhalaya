@@ -15,50 +15,54 @@ const Invoices = () => {
   const [showForm, setShowForm] = useState(false);
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const [trips, setTrips] = useState([])
+  const [trips, setTrips] = useState([]);
   const handleCancel = (id) => {
     Swal.fire({
-      title: 'Are you sure?',
+      title: "Are you sure?",
       text: "You won't be able to revert this!",
-      icon: 'warning',
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, cancel it!'
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, cancel it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        axios.put('/api/v1/trip/' + id, { status: 'cancelled' })
+        axios
+          .put("/api/v1/trip/" + id, { status: "cancelled" })
           .then((res) => {
             console.log(res);
-            toast.success(res.data.message)
-            getTrips()
+            toast.success(res.data.message);
+            getTrips();
           })
           .catch((e) => {
-            toast.error(e.response.data.message)
-            getTrips()
-          })
+            toast.error(e.response.data.message);
+            getTrips();
+          });
       }
-    })
-  }
+    });
+  };
   const columns = [
     { field: "SLNo", headerName: "SL.No" },
-    { field: "id", headerName: "ID" },
+    { field: "id", headerName: "ID", minWidth: 180 },
     {
       field: "customerName",
       headerName: "Customer Name",
       flex: 1,
       cellClassName: "name-column--cell",
+      minWidth: 150,
     },
     {
       field: "driverName",
       headerName: "Driver Name",
       flex: 1,
+      minWidth: 150,
     },
 
     {
       field: "cost",
       headerName: "Cost",
       flex: 1,
+      minWidth: 150,
       renderCell: (params) => (
         <Typography color={colors.greenAccent[500]}>
           ${params.row.cost}
@@ -70,64 +74,70 @@ const Invoices = () => {
       field: "date",
       headerName: "Date",
       flex: 1,
-      renderCell: ({ row }) => (
-        moment(row.date).format('DD/MM/YYYY hh:mm a')
-      ),
+      minWidth: 150,
+      renderCell: ({ row }) => moment(row.date).format("DD/MM/YYYY hh:mm a"),
     },
     {
       field: "status",
       headerName: "Status",
       flex: 1,
       renderCell: ({ row }) => (
-        <Typography textTransform={'capitalize'}>
-          {row.status}
-        </Typography>
+        <Typography textTransform={"capitalize"}>{row.status}</Typography>
       ),
+      minWidth: 150,
     },
     {
       field: "actions",
       headerName: "Actions",
       flex: 1,
+      minWidth: 200,
       renderCell: ({ row }) => (
-        <Stack direction='row' spacing={2}>
+        <Stack direction="row" spacing={2}>
           <Button
-            variant='contained'
+            variant="contained"
             LinkComponent={RouterLink}
-            to={'edit/' + row.id}
-          >View</Button>
+            to={"edit/" + row.id}
+          >
+            View
+          </Button>
           <Button
             onClick={() => handleCancel(row.id)}
-            variant='contained'
-            color='error'
-          >Cancel</Button>
+            variant="contained"
+            color="error"
+          >
+            Cancel
+          </Button>
         </Stack>
-      )
+      ),
     },
   ];
 
   const getTrips = (signal) => {
-    axios.get('/api/v1/trip', { signal })
-      .then((res) => {
-        setTrips(res.data.trip.map((trip, i) => ({ SLNo: i + 1, id: trip._id, ...trip })))
-      })
-  }
+    axios.get("/api/v1/trip", { signal }).then((res) => {
+      setTrips(
+        res.data.trip.map((trip, i) => ({ SLNo: i + 1, id: trip._id, ...trip }))
+      );
+    });
+  };
 
   useEffect(() => {
-    const controller = new AbortController()
+    const controller = new AbortController();
 
-    getTrips(controller.signal)
+    getTrips(controller.signal);
     return () => {
-      controller.abort()
-    }
-  }, [])
+      controller.abort();
+    };
+  }, []);
 
   return (
     <>
       <Box m="20px">
         <div className="comapny-management">
           <Header title="TRIPS" subtitle="Manage the trips" />
-          <Stack direction='row' justifyContent={'end'}>
-            <Button  variant="contained" LinkComponent={RouterLink} to="create" >Create New Trip</Button>
+          <Stack direction="row" justifyContent={"end"}>
+            <Button variant="contained" LinkComponent={RouterLink} to="create">
+              Create New Trip
+            </Button>
           </Stack>
         </div>
 
@@ -160,15 +170,10 @@ const Invoices = () => {
             },
           }}
         >
-
-
           <DataGrid checkboxSelection rows={trips} columns={columns} />
-
         </Box>
-
       </Box>
     </>
-
   );
 };
 

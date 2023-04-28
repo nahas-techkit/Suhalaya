@@ -17,8 +17,8 @@ instance.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
-    const statusCode = error.response.status;
-    const errorMessage = error.response.data.error;
+    const statusCode = error.response?.status;
+    const errorMessage = error.response?.data?.error;
 
     // If the access token has expired and the server returns a 401 error with the specific error message
     if (

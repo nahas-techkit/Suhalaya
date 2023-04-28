@@ -37,30 +37,33 @@ const Contacts = () => {
   }
 
   const columns = [
-    { field: "slNo", headerName: "SL.No", flex: 0.5 },
-    { field: "id", headerName: "ID", flex: 0.5 },
-
+    { field: "slNo", headerName: "SL.No", flex: 0.5, },
+    { field: "id", headerName: "ID", flex: 0.5,minWidth:180 },
     {
       field: "firstName",
       headerName: "First name",
       flex: 1,
       cellClassName: "name-column--cell",
+      minWidth:150,
     },
     {
       field: "lastName",
       headerName: "Last name",
       flex: 1,
       cellClassName: "name-column--cell",
+      minWidth:150,
     },
 
     {
       field: "contact",
       headerName: "Phone Number",
+      minWidth:150,
       flex: 1,
     },
     {
       field: "email",
       headerName: "Email",
+      minWidth:150,
       flex: 1,
     },
 
@@ -68,6 +71,7 @@ const Contacts = () => {
       field: "zipCode",
       headerName: "Manage",
       flex: 1,
+      minWidth: 200,
       renderCell: ({ row: { id } }) => {
         return (
           <>

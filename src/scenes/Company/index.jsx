@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Box, Button, Link, Typography, useTheme } from "@mui/material";
+import { Box, Button, Link, Stack, Typography, useTheme } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 
@@ -19,48 +19,53 @@ const Team = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
-
   const columns = [
     { field: "SlNo", headerName: "Sl.No" },
-    { field: "id", headerName: "ID" },
+    { field: "id", headerName: "ID", minWidth: 180 },
     {
       field: "name",
       headerName: "Company name",
       flex: 1,
+      minWidth: 150,
       cellClassName: "name-column--cell",
     },
 
     {
       field: "phone",
       headerName: "Phone Number",
+      minWidth: 150,
       flex: 1,
     },
     {
       field: "email",
       headerName: "Email",
+      minWidth: 150,
       flex: 1,
     },
     {
       field: "accessLevel",
       headerName: "Manage",
       flex: 1,
-
+      minWidth: 200,
       renderCell: ({ row: { access, _id } }) => {
         return (
-          <>
-
-            <Button variant='contained' component={RouterLink} to={`/company/view/${_id}`}>
+          <Stack spacing={2} direction={'row'}>
+            <Button
+              variant="contained"
+              component={RouterLink}
+              to={`/company/view/${_id}`}
+            >
               View
             </Button>
 
             <Button
-              variant='contained'
-              color='error'
+              variant="contained"
+              color="error"
               onClick={() => handleDelete(_id)}
             >
               Delete
             </Button>
-          </>
+          </Stack>
         );
       },
     },
@@ -92,27 +97,29 @@ const Team = () => {
   const handleDelete = useCallback(
     (id) => {
       Swal.fire({
-        title: 'Are you sure?',
+        title: "Are you sure?",
         text: "You won't be able to revert this!",
-        icon: 'warning',
+        icon: "warning",
         showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!'
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
       }).then((result) => {
         if (result.isConfirmed) {
-          axios.delete(`/api/v1/company/${id}`).then((res) => {
-            getdata()
-            toast.success(res.data.message)
-          })
-            .catch((e) => {
-              toast.error(e.response.data.message)
+          axios
+            .delete(`/api/v1/company/${id}`)
+            .then((res) => {
+              getdata();
+              toast.success(res.data.message);
             })
+            .catch((e) => {
+              toast.error(e.response.data.message);
+            });
         }
-      })
+      });
     },
-    [getdata],
-  )
+    [getdata]
+  );
   return (
     <>
       <>
