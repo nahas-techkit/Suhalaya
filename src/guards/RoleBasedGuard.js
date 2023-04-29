@@ -18,7 +18,7 @@ function RoleBasedGuard({ hasContent, roles, children }) {
     return hasContent ? (
       <main className="content">
         <Topbar />
-        <Container sx={{ alignItems: "center" }}>
+        <Container sx={{ alignItems: "center" }}> 
           <Stack
             sx={{
               height: "100vh",
