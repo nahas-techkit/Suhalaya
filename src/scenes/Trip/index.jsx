@@ -24,11 +24,12 @@ const Invoices = () => {
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, cancel it!",
+      confirmButtonText: "Yes",
+      cancelButtonText: "No",
     }).then((result) => {
       if (result.isConfirmed) {
         axios
-          .put("/api/v1/trip/" + id, { status: "cancelled" })
+          .delete("/api/v1/trip/" + id, { status: "cancelled" })
           .then((res) => {
             console.log(res);
             toast.success(res.data.message);
@@ -105,7 +106,9 @@ const Invoices = () => {
             variant="contained"
             color="error"
           >
-            Cancel
+            {["completed", "cancelled"].includes(row.status)
+              ? "Delete"
+              : "Cancel"}
           </Button>
         </Stack>
       ),
