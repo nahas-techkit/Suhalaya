@@ -41,7 +41,7 @@ const Form = () => {
     driverPhone: "",
     date: "",
     time: "",
-    // extraLocation: '',
+    extraLocation: '',
     vehicleModel: '',
     tripType: "Airport Transport",
     cost: 0
@@ -135,11 +135,12 @@ const Form = () => {
       {id ? <Stack direction={'row'} spacing={2} justifyContent='end'>
         <Button
           variant="contained"
-          // color='p'
+          color='secondary'
           onClick={() => setEditable(true)}
         >Edit</Button>
         <Button
           variant="contained"
+          color='secondary'
           LinkComponent={RouterLink}
           to={`/trips/print/${id}`}
         >Trip Sheet</Button>
@@ -205,7 +206,7 @@ const Form = () => {
               sx={{ gridColumn: "span 2" }}
               disabled={!editable}
             />
-            {/* <TextField
+            <TextField
               fullWidth
               variant="filled"
               type="text"
@@ -227,7 +228,7 @@ const Form = () => {
               helperText={touched.extraLocation && errors.extraLocation}
               sx={{ gridColumn: "span 2" }}
               disabled={!editable}
-            /> */}
+            />
             <TextField
               fullWidth
               variant="filled"
@@ -303,14 +304,14 @@ const Form = () => {
               {...getFieldProps('tripType')}
 
             >
-              <FormControlLabel value="Airport Transport" control={<Radio  disabled={!editable} />} label="Airport Transport" />
-              <FormControlLabel value="Out station" control={<Radio  disabled={!editable} />} label="Out station" />
-              <FormControlLabel value="Hourly Based/Package" control={<Radio  disabled={!editable} />} label="Hourly Based/Package" />
+              <FormControlLabel value="Airport Transport" control={<Radio color="secondary" disabled={!editable} />} label="Airport Transport" />
+              <FormControlLabel value="Out station" control={<Radio color="secondary" disabled={!editable} />} label="Out station" />
+              <FormControlLabel value="Hourly Based/Package" control={<Radio color="secondary" disabled={!editable} />} label="Hourly Based/Package" />
             </RadioGroup>
             <Typography fullWidth sx={{ gridColumn: "span 4" }}>
               Driver Details
             </Typography>
-            <Autocomplete
+            {(!id || id && drivers && drivers.length && values?.driver) && <Autocomplete
               disablePortal
               id="combo-box-demo"
               options={drivers}
@@ -337,8 +338,7 @@ const Form = () => {
                 setFieldValue("vehicleModel", value.vehicleModel, true)
               }}
               disabled={!editable}
-              value={values.driver || null}
-            />
+            />}
             <TextField
               fullWidth
               variant="filled"
@@ -397,7 +397,7 @@ const Form = () => {
             />
           </Box>
           <Box display="flex" justifyContent="end" mt="20px">
-            <LoadingButton disabled={!editable} loading={isSubmitting} type="submit" variant="contained">
+            <LoadingButton disabled={!editable} loading={isSubmitting} type="submit" color="secondary" variant="contained">
               Submit
             </LoadingButton>
           </Box>

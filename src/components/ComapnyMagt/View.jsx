@@ -103,7 +103,7 @@ const Form = ({ company, onEditDep, onDeleteDep, onEditEmp,isEditable, onDeleteE
 
                         </Box>
                         <Box display="flex" justifyContent="end" mt="20px">
-                            <Button  disabled={!isEditable} type="submit"  variant="contained">
+                            <Button  disabled={!isEditable} type="submit" color="secondary" variant="contained">
                                 Submit
                             </Button>
                         </Box>

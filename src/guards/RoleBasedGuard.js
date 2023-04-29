@@ -13,7 +13,6 @@ RoleBasedGuard.propTypes = {
 function RoleBasedGuard({ hasContent, roles, children }) {
   const { user } = useAuth();
   const currentRole = user?.role;
-  console.log(currentRole);
   if (typeof roles !== "undefined" && !roles.includes(currentRole)) {
     return hasContent ? (
       <main className="content">
