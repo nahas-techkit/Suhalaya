@@ -42,6 +42,3 @@ body,
     color: white;
     cursor: pointer;
 }
-.swal2-shown .swal2-container{
-  z-index: 121000;
-}
