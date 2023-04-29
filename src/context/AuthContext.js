@@ -9,12 +9,12 @@ import axios from "../utils/axiosInstance";
 import { useNavigate } from "react-router-dom";
 
 export const AuthContext = createContext({
-  user: null,
-  login: () => Promise.resolve(),
-  register: () => Promise.resolve(),
-  logout: () => {},
-  loading: false,
-});
+    user: null,
+    login: () => Promise.resolve(),
+    register: () => Promise.resolve(),
+    logout: () => { },
+    loading:false
+})
 
 AuthProvider.propTypes = {
   children: PropTypes.node,
