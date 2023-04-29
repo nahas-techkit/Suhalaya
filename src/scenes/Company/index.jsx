@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Box, Button, Link, Stack, Typography, useTheme } from "@mui/material";
+import { Box, Button, Link, Typography, useTheme } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 
@@ -19,53 +19,59 @@ const Team = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
+
   const columns = [
     { field: "SlNo", headerName: "Sl.No" },
-    { field: "id", headerName: "ID", minWidth: 180 },
+    { field: "id", headerName: "ID" },
     {
       field: "name",
       headerName: "Company name",
       flex: 1,
-      minWidth: 150,
       cellClassName: "name-column--cell",
     },
 
     {
       field: "phone",
       headerName: "Phone Number",
-      minWidth: 150,
       flex: 1,
     },
     {
       field: "email",
       headerName: "Email",
-      minWidth: 150,
       flex: 1,
     },
     {
       field: "accessLevel",
       headerName: "Manage",
       flex: 1,
-      minWidth: 200,
-      renderCell: ({ row: { access, _id } }) => {
+
+      renderCell: ({ row: { access, id } }) => {
         return (
-          <Stack spacing={2} direction={'row'}>
-            <Button
-              variant="contained"
-              component={RouterLink}
-              to={`/company/view/${_id}`}
+          <>
+            <Box
+              width="60%"
+              m="0 5px"
+              p="5px"
+              display="flex"
+              justifyContent="center"
+              backgroundColor={colors.blueAccent[700]}
+              borderRadius="4px"
             >
-              View
-            </Button>
+              <Link component={RouterLink} to={`/company/view/${id}`}>
+                <Typography color={colors.grey[100]} sx={{ ml: "5px" }}>
+                  View
+                </Typography>
+              </Link>
+            </Box>
 
             <Button
-              variant="contained"
-              color="error"
-              onClick={() => handleDelete(_id)}
+              variant='contained'
+              color='error'
+              onClick={() => handleDelete(id)}
             >
               Delete
             </Button>
-          </Stack>
+          </>
         );
       },
     },
@@ -83,8 +89,7 @@ const Team = () => {
         res.data.companies.map((company, i) => {
           return {
             SlNo: i + 1,
-            id: company?.id || company?._id,
-            _id: company?._id,
+            id: company?._id,
             name: company?.name,
             email: company?.email,
             phone: company?.number,
@@ -97,29 +102,27 @@ const Team = () => {
   const handleDelete = useCallback(
     (id) => {
       Swal.fire({
-        title: "Are you sure?",
+        title: 'Are you sure?',
         text: "You won't be able to revert this!",
-        icon: "warning",
+        icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!",
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
       }).then((result) => {
         if (result.isConfirmed) {
-          axios
-            .delete(`/api/v1/company/${id}`)
-            .then((res) => {
-              getdata();
-              toast.success(res.data.message);
-            })
+          axios.delete(`/api/v1/company/${id}`).then((res) => {
+            getdata()
+            toast.success(res.data.message)
+          })
             .catch((e) => {
-              toast.error(e.response.data.message);
-            });
+              toast.error(e.response.data.message)
+            })
         }
-      });
+      })
     },
-    [getdata]
-  );
+    [getdata],
+  )
   return (
     <>
       <>

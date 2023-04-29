@@ -13,7 +13,7 @@ function DepartmentSigle({ onDelete, onEdit, data }) {
                         <IconButton onClick={() => onEdit(data)} edge="end" aria-label="edit">
                             <EditIcon />
                         </IconButton>
-                        <IconButton color='error' onClick={() => onDelete(data._id)} edge="end" aria-label="delete">
+                        <IconButton onClick={() => onDelete(data._id)} edge="end" aria-label="delete">
                             <DeleteIcon />
                         </IconButton>
                     </Stack>
