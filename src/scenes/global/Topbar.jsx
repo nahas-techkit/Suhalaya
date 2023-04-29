@@ -8,10 +8,8 @@ import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import SearchIcon from "@mui/icons-material/Search";
-import Iconify from '../../components/iconify'
-import AccountPopover from "./AccountPopover";
 
-const Topbar = ({setOpenNav}) => {
+const Topbar = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const colorMode = useContext(ColorModeContext);
@@ -19,16 +17,6 @@ const Topbar = ({setOpenNav}) => {
   return (
     <Box display="flex" justifyContent="space-between" p={2}>
       {/* SEARCH BAR */}
-      <IconButton
-          onClick={setOpenNav}
-          sx={{
-            mr: 1,
-            color: 'text.primary',
-            display: { lg: 'none' },
-          }}
-        >
-          <Iconify icon="eva:menu-2-fill" />
-        </IconButton>
       <Box
         display="flex"
         backgroundColor={colors.primary[400]}
@@ -55,7 +43,9 @@ const Topbar = ({setOpenNav}) => {
         <IconButton>
           <SettingsOutlinedIcon />
         </IconButton>
-        <AccountPopover/>
+        <IconButton>
+          <PersonOutlinedIcon />
+        </IconButton>
       </Box>
     </Box>
   );

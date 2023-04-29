@@ -63,7 +63,7 @@ const Form = () => {
         <div className='ViewCompany'>
           <div className="comapny-management">
             <Toaster/>
-            <Header title="Driver" subtitle="Managing the Drivers" />
+            <Header title="COMPANIES" subtitle="Managing the Drivers" />
             <div>
               <div className='viewcompany-button'>
                 <Button onClick={()=>setEdit(true)} style={{ backgroundColor: "green" }} >Edit</Button >
@@ -261,7 +261,7 @@ const Form = () => {
                 />
               </Box>
               <Box display="flex" justifyContent="end" mt="20px">
-                <Button type="submit" disabled={!edit||!isValid} variant="contained">
+                <Button type="submit" disabled={!edit||!isValid} color="secondary" variant="contained">
                   Submit
                 </Button>
               </Box>
